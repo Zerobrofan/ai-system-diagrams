@@ -19,7 +19,7 @@ PlantUML is the industry standard for textual UML modeling. It excels at formal 
 You do **not** need Java or Graphviz installed locally. Run our zero-dependency Python script:
 
 ```bash
-python 1-plantuml/render.py
+python plantuml/render.py
 ```
 
 This encodes the diagrams into PlantUML standard deflate-base64 streams and retrieves publication-ready SVGs into `output/`.

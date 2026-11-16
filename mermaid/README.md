@@ -23,7 +23,7 @@ Open [`preview.html`](preview.html) directly in any modern web browser. It rende
 Run the zero-dependency Python script:
 
 ```bash
-python 2-mermaid/render.py
+python mermaid/render.py
 ```
 
 This retrieves standalone, vector SVGs into `output/` using base64 URL encoding.

@@ -6,9 +6,9 @@
   "scripts": {
     "start": "python scripts/serve.py",
     "render": "python scripts/render_all.py",
-    "render:plantuml": "python 1-plantuml/render.py",
-    "render:mermaid": "python 2-mermaid/render.py",
-    "render:diagram-design": "python 3-diagram-design/render.py"
+    "render:plantuml": "python plantuml/render.py",
+    "render:mermaid": "python mermaid/render.py",
+    "render:diagram-design": "python diagram-design/render.py"
   },
   "repository": {
     "type": "git",

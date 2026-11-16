@@ -66,26 +66,27 @@ All approaches model the **MedPulse Smart Hospital**:
 
 | Diagram | Focus & Modeling | PlantUML | Mermaid.js | diagram-design |
 |---|---|---|---|---|
-| **Use Case Diagram** | Actors (Patient, Doctor, Nurse, Admin, Insurance), `<<include>>`, `<<extend>>` | [`use-case.puml`](1-plantuml/use-case.puml) | [`use-case.mmd`](2-mermaid/use-case.mmd) | [`use-case.html`](3-diagram-design/use-case.html) |
-| **Class Diagram** | Abstract `User`, `Patient`, `Doctor`, inheritance, aggregation, composition | [`class-diagram.puml`](1-plantuml/class-diagram.puml) | [`class-diagram.mmd`](2-mermaid/class-diagram.mmd) | [`class-diagram.html`](3-diagram-design/class-diagram.html) |
-| **Deployment Diagram** | Client edge, Cloudflare WAF, Kubernetes pods, PostgreSQL, Redis, external APIs | [`deployment-diagram.puml`](1-plantuml/deployment-diagram.puml) | [`deployment-diagram.mmd`](2-mermaid/deployment-diagram.mmd) | [`deployment-diagram.html`](3-diagram-design/deployment-diagram.html) |
+| **Use Case Diagram** | Actors (Patient, Doctor, Nurse, Admin, Insurance), `<<include>>`, `<<extend>>` | [`use-case.puml`](plantuml/use-case.puml) | [`use-case.mmd`](mermaid/use-case.mmd) | [`use-case.html`](diagram-design/use-case.html) |
+| **Class Diagram** | Abstract `User`, `Patient`, `Doctor`, inheritance, aggregation, composition | [`class-diagram.puml`](plantuml/class-diagram.puml) | [`class-diagram.mmd`](mermaid/class-diagram.mmd) | [`class-diagram.html`](diagram-design/class-diagram.html) |
+| **Deployment Diagram** | Client edge, Cloudflare WAF, Kubernetes pods, PostgreSQL, Redis, external APIs | [`deployment-diagram.puml`](plantuml/deployment-diagram.puml) | [`deployment-diagram.mmd`](mermaid/deployment-diagram.mmd) | [`deployment-diagram.html`](diagram-design/deployment-diagram.html) |
 
 ---
 
 ## 📦 Adding to Any Existing Project
 
-You can install this repository into **any existing project** (Python, Java, TypeScript, Go, C#, etc.) in an isolated `ai-system-diagrams` subfolder so that your files remain clean and your AI agent can reference the framework directly.
+You can add this repository to **any existing project** (Python, Java, TypeScript, Go, C#, etc.) in an isolated `ai-system-diagrams` folder so your project stays clean and your AI agent can reference the prompts directly.
 
-### 1. Add as a Subfolder
-Inside your application's root directory, clone the repository or add it as a Git submodule:
+### 1. Simple 1-Step Installation
+Open your terminal in your project's root directory and run:
 
 ```bash
-# Option A: Clone into ai-system-diagrams/
 git clone https://github.com/Zerobrofan/ai-system-diagrams.git ai-system-diagrams
-
-# Option B: Add as a Git Submodule
-git submodule add https://github.com/Zerobrofan/ai-system-diagrams.git ai-system-diagrams
 ```
+
+*(That's it! Everything is placed neatly inside `ai-system-diagrams` with zero setup needed).*
+
+> [!TIP]
+> **For Git users:** If you want all files inside `ai-system-diagrams` to be committed as part of your main project repo, simply delete the inner `.git` folder (`rm -rf ai-system-diagrams/.git` or Windows `rmdir /s /q ai-system-diagrams\.git`).
 
 ### 2. Resulting Project Structure
 ```text
@@ -97,9 +98,9 @@ your-project/
 └── ai-system-diagrams/           # Cloned framework subfolder
     ├── prompts/                  # AI prompt playbooks & taxonomy specifications
     ├── scripts/                  # Automated Python SVG renderers
-    ├── 1-plantuml/               # PlantUML diagrams (.puml) & compiled output/
-    ├── 2-mermaid/                # Mermaid diagrams (.mmd) & compiled output/
-    ├── 3-diagram-design/         # Editorial HTML/SVG diagrams (.html) & output/
+    ├── plantuml/                 # PlantUML diagrams (.puml) & compiled output/
+    ├── mermaid/                  # Mermaid diagrams (.mmd) & compiled output/
+    ├── diagram-design/           # Editorial HTML/SVG diagrams (.html) & output/
     └── index.html                # Interactive comparison dashboard
 ```
 
@@ -118,7 +119,7 @@ Use PlantUML when you need standard UML compliance for university reports, techn
 > Using the UML Class Diagram guidelines in ai-system-diagrams/prompts/structure-diagrams.md:
 > 1. Extract core domain entities, fields, data types, and method signatures.
 > 2. Model inheritance, composition, and associations with proper multiplicities.
-> 3. Generate a formal PlantUML diagram and save it to ai-system-diagrams/1-plantuml/class-diagram.puml.
+> 3. Generate a formal PlantUML diagram and save it to ai-system-diagrams/plantuml/class-diagram.puml.
 > ```
 
 ### 🟢 Option 2: Mermaid.js (GitHub Markdown & Lightweight Documentation)
@@ -130,7 +131,7 @@ Use Mermaid when you want diagrams that render directly in GitHub `README.md` fi
 > Using the Deployment Diagram guidelines in ai-system-diagrams/prompts/structure-diagrams.md:
 > 1. Model client gateways, reverse proxies, microservices, databases, and message queues.
 > 2. Include port mappings and transport protocols (HTTPS, gRPC, TCP).
-> 3. Generate a Mermaid.js flowchart diagram and save it to ai-system-diagrams/2-mermaid/deployment-diagram.mmd.
+> 3. Generate a Mermaid.js flowchart diagram and save it to ai-system-diagrams/mermaid/deployment-diagram.mmd.
 > ```
 
 ### 🟣 Option 3: diagram-design (High-Aesthetic Publication & Presentation)
@@ -142,7 +143,7 @@ Use diagram-design when preparing presentation slides, pitch decks, blog posts, 
 > Using the editorial design principles in ai-system-diagrams/prompts/behavior-diagrams.md:
 > 1. Model the actors, system boundaries, and core use cases.
 > 2. Use a modern dark theme (#0d1117), crisp 1px connectors, and colored pill badges.
-> 3. Generate an editorial HTML + inline SVG diagram and save it to ai-system-diagrams/3-diagram-design/use-case.html.
+> 3. Generate an editorial HTML + inline SVG diagram and save it to ai-system-diagrams/diagram-design/use-case.html.
 > ```
 
 ---
@@ -158,9 +159,9 @@ python ai-system-diagrams/scripts/render_all.py
 
 You can also compile individual formats:
 ```bash
-python ai-system-diagrams/1-plantuml/render.py
-python ai-system-diagrams/2-mermaid/render.py
-python ai-system-diagrams/3-diagram-design/render.py
+python ai-system-diagrams/plantuml/render.py
+python ai-system-diagrams/mermaid/render.py
+python ai-system-diagrams/diagram-design/render.py
 ```
 *(Requires zero local Java, Graphviz, or headless browser installations!)*
 
@@ -187,21 +188,21 @@ ai-system-diagrams/
 ├── LICENSE                            # MIT License
 ├── package.json                       # npm convenience scripts
 │
-├── 1-plantuml/                        # Approach 1: PlantUML
+├── plantuml/                          # Approach 1: PlantUML
 │   ├── use-case.puml
 │   ├── class-diagram.puml
 │   ├── deployment-diagram.puml
 │   ├── render.py                      # Zero-dependency PlantUML to SVG compiler
 │   └── output/                        # Compiled SVGs
 │
-├── 2-mermaid/                         # Approach 2: Mermaid.js
+├── mermaid/                           # Approach 2: Mermaid.js
 │   ├── use-case.mmd
 │   ├── class-diagram.mmd
 │   ├── deployment-diagram.mmd
 │   ├── render.py                      # Zero-dependency Mermaid to SVG compiler
 │   └── output/                        # Compiled SVGs
 │
-├── 3-diagram-design/                  # Approach 3: diagram-design
+├── diagram-design/                    # Approach 3: diagram-design
 │   ├── use-case.html
 │   ├── class-diagram.html
 │   ├── deployment-diagram.html

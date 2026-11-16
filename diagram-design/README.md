@@ -48,7 +48,7 @@ Double-click any `.html` file (`use-case.html`, `class-diagram.html`, `deploymen
 Run our Python script:
 
 ```bash
-python 3-diagram-design/render.py
+python diagram-design/render.py
 ```
 
 This invokes the framework's `export_svg.py` extractor and outputs standalone `.svg` files into `output/`.

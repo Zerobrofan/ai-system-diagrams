@@ -28,9 +28,9 @@ def main():
     root = Path(__file__).resolve().parent.parent
 
     scripts = [
-        (root / "1-plantuml" / "render.py", "1. PlantUML (Generated with AI)"),
-        (root / "2-mermaid" / "render.py", "2. Mermaid.js (Generated with AI)"),
-        (root / "3-diagram-design" / "render.py", "3. diagram-design Framework"),
+        (root / "plantuml" / "render.py", "PlantUML (Generated with AI)"),
+        (root / "mermaid" / "render.py", "Mermaid.js (Generated with AI)"),
+        (root / "diagram-design" / "render.py", "diagram-design Framework"),
     ]
 
     success_count = 0
@@ -45,9 +45,9 @@ def main():
     print(f"  RENDER SUMMARY: {success_count}/{len(scripts)} approaches rendered successfully.")
     print("="*55)
     print("\nRendered SVG outputs are available in:")
-    print(" - 1-plantuml/output/")
-    print(" - 2-mermaid/output/")
-    print(" - 3-diagram-design/output/")
+    print(" - plantuml/output/")
+    print(" - mermaid/output/")
+    print(" - diagram-design/output/")
     print("\nTo explore the interactive comparison showcase, open index.html or run:")
     print("  python scripts/serve.py\n")
 

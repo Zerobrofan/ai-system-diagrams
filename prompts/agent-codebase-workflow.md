@@ -8,16 +8,14 @@ This guide details how students and software engineers can install this reposito
 
 Integrate this framework into any existing repository (Python, Java, C#, Go, TypeScript, Rust, etc.) as an isolated `ai-system-diagrams` subfolder:
 
-### Quick Install
+### Quick 1-Step Install
 Navigate to your application root directory and run:
 
 ```bash
-# Option A: Clone into ai-system-diagrams
 git clone https://github.com/Zerobrofan/ai-system-diagrams.git ai-system-diagrams
-
-# Option B: Add as a Git Submodule
-git submodule add https://github.com/Zerobrofan/ai-system-diagrams.git ai-system-diagrams
 ```
+
+*(No extra configuration or dependencies required).*
 
 ### Resulting Project Structure
 ```text
@@ -35,9 +33,9 @@ your-project/
     ├── scripts/                  # Zero-dependency Python SVG rendering scripts
     │   ├── render_all.py
     │   └── serve.py
-    ├── 1-plantuml/               # PlantUML diagrams (.puml) & compiled output/
-    ├── 2-mermaid/                # Mermaid diagrams (.mmd) & compiled output/
-    ├── 3-diagram-design/         # Editorial HTML/SVG diagrams (.html) & compiled output/
+    ├── plantuml/                 # PlantUML diagrams (.puml) & compiled output/
+    ├── mermaid/                  # Mermaid diagrams (.mmd) & compiled output/
+    ├── diagram-design/           # Editorial HTML/SVG diagrams (.html) & compiled output/
     └── index.html                # Interactive viewer dashboard
 ```
 
@@ -86,7 +84,7 @@ Using the UML Class Diagram specification defined in ai-system-diagrams/prompts/
 1. Identify all core business entities, abstract base classes, and interfaces.
 2. Extract fields (with visibility modifiers and data types) and business operations.
 3. Determine formal relationship semantics (generalization, composition, aggregation, association with multiplicities).
-4. Output the complete diagram as ai-system-diagrams/1-plantuml/class-diagram.puml with modern skinparam styling.
+4. Output the complete diagram as ai-system-diagrams/plantuml/class-diagram.puml with modern skinparam styling.
 ```
 
 #### Sequence Diagram from Endpoints:
@@ -97,7 +95,7 @@ Using the Sequence Diagram specification defined in ai-system-diagrams/prompts/i
 1. Model all participating lifelines with accurate stereotypes (actor, boundary, control, entity, database).
 2. Detail the exact method invocations, synchronous requests, database queries, and return responses.
 3. Enclose conditional logic within alt/else frames and loops within loop frames.
-4. Output the diagram as ai-system-diagrams/1-plantuml/sequence-diagram.puml.
+4. Output the diagram as ai-system-diagrams/plantuml/sequence-diagram.puml.
 ```
 
 ---
@@ -111,7 +109,7 @@ Inspect our infrastructure configuration files (e.g., Dockerfiles, docker-compos
 Using the Deployment Diagram specification defined in ai-system-diagrams/prompts/structure-diagrams.md:
 1. Map out execution nodes: reverse proxy/edge, microservice containers, databases, caches, and third-party APIs.
 2. Identify container port allocations and network transport protocols (HTTPS, gRPC, JDBC).
-3. Generate a Mermaid.js flowchart (flowchart TD) with subgraphs for network zones and save it to ai-system-diagrams/2-mermaid/deployment-diagram.mmd.
+3. Generate a Mermaid.js flowchart (flowchart TD) with subgraphs for network zones and save it to ai-system-diagrams/mermaid/deployment-diagram.mmd.
 ```
 
 ---
@@ -125,7 +123,7 @@ Trace the primary user workflows and roles in our application (e.g., Patient, Do
 Using the editorial design guidelines in ai-system-diagrams/prompts/behavior-diagrams.md:
 1. Model user actors, system boundary containers, and core use case nodes.
 2. Render crisp 1px connectors behind nodes and include colored pill badges for statuses/types.
-3. Apply a clean dark aesthetic (#0d1117 background) and output the standalone HTML file to ai-system-diagrams/3-diagram-design/use-case.html.
+3. Apply a clean dark aesthetic (#0d1117 background) and output the standalone HTML file to ai-system-diagrams/diagram-design/use-case.html.
 ```
 
 ---
