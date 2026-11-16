@@ -1,11 +1,11 @@
 <div align="center">
 
-# AI System Diagrams Laboratory
+# AI System Diagrams
 ### Drawing Architecture Diagrams with AI for Advanced Software Engineering
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 [![Course](https://img.shields.io/badge/Course-Advanced%20Software%20Engineering-1e3a8a.svg?style=for-the-badge)](#)
-[![Curriculum](https://img.shields.io/badge/Curriculum-Eng.%20Abdallah%20Amir-0284c7.svg?style=for-the-badge)](#)
+[![Made By](https://img.shields.io/badge/Instructor-Eng.%20Abdallah%20Amir-0284c7.svg?style=for-the-badge)](#)
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](#)
 
 <p align="center">
