@@ -6,27 +6,36 @@ This guide details how students and software engineers can install this reposito
 
 ## 1. Installation into an Existing Project
 
-You can integrate this framework into any existing repository (Python, Java, C#, Go, TypeScript, Rust, etc.) using one of three methods:
+You can integrate this framework directly into any existing repository (Python, Java, C#, Go, TypeScript, Rust, etc.) by placing the core framework folders directly in your application root:
 
-### Method A: Git Submodule (Recommended for Version Control)
-Navigate to your application root directory and run:
+### Quick Install (Project Root)
+Navigate to your application root directory and copy or clone the core folders (`prompts/`, `scripts/`, `1-plantuml/`, `2-mermaid/`, `3-diagram-design/`):
+
 ```bash
-git submodule add https://github.com/AbdallahAmir/ai-system-diagrams.git docs/diagrams
+# Clone into a temporary folder and copy directly into your project root:
+git clone https://github.com/Zerobrofan/ai-system-diagrams.git _temp_diagrams
+cp -r _temp_diagrams/prompts _temp_diagrams/scripts _temp_diagrams/1-plantuml _temp_diagrams/2-mermaid _temp_diagrams/3-diagram-design .
+rm -rf _temp_diagrams
 ```
 
-### Method B: Directory Copy
-Copy the `prompts/`, `scripts/`, `1-plantuml/`, `2-mermaid/`, and `3-diagram-design/` directories directly into a dedicated documentation folder within your project:
+*Or download the ZIP repository archive from [GitHub](https://github.com/Zerobrofan/ai-system-diagrams) and extract these folders directly into your project root.*
+
+### Direct Project Structure
 ```text
-your-application/
-├── src/
-├── tests/
-├── docs/
-│   └── architecture/          <-- Placed here
-│       ├── prompts/
-│       ├── scripts/
-│       ├── 1-plantuml/
-│       ├── 2-mermaid/
-│       └── 3-diagram-design/
+your-project/
+├── src/                          # Your application source code
+├── tests/                        # Your unit/integration tests
+├── prompts/                      # Architecture diagram specifications & AI prompt rules
+│   ├── structure-diagrams.md
+│   ├── behavior-diagrams.md
+│   ├── interaction-diagrams.md
+│   └── agent-codebase-workflow.md
+├── scripts/                      # Zero-dependency Python SVG rendering scripts
+│   ├── render_all.py
+│   └── serve.py
+├── 1-plantuml/                   # PlantUML diagrams (.puml) & compiled output/
+├── 2-mermaid/                    # Mermaid diagrams (.mmd) & compiled output/
+├── 3-diagram-design/             # Editorial HTML/SVG diagrams (.html) & compiled output/
 └── README.md
 ```
 
@@ -69,43 +78,43 @@ Copy and paste these exact instructions into your AI coding assistant in your pr
 ```text
 Analyze the domain models, entity definitions, and database schemas in this project (e.g., in /src/models or /entities).
 
-Using the UML Class Diagram specification defined in docs/diagrams/prompts/structure-diagrams.md:
+Using the UML Class Diagram specification defined in prompts/structure-diagrams.md:
 1. Identify all core business entities, abstract base classes, and interfaces.
 2. Extract fields (with visibility modifiers and data types) and business operations.
 3. Determine formal relationship semantics (generalization, composition, aggregation, association with multiplicities).
-4. Output the complete diagram as docs/diagrams/1-plantuml/class-diagram.puml with modern skinparam styling.
+4. Output the complete diagram as 1-plantuml/class-diagram.puml with modern skinparam styling.
 ```
 
 ### Prompt 2: Extract Deployment Architecture from Infrastructure Code
 ```text
 Inspect our infrastructure configuration files (e.g., Dockerfiles, docker-compose.yml, Kubernetes manifests, Terraform files, Helm charts).
 
-Using the Deployment Diagram specification defined in docs/diagrams/prompts/structure-diagrams.md:
+Using the Deployment Diagram specification defined in prompts/structure-diagrams.md:
 1. Map out all execution nodes: client tier, reverse proxy / edge, compute microservice containers, persistence databases, caches, and external third-party APIs.
 2. Identify container port allocations and network transport protocols (HTTPS, gRPC, JDBC, AMQP).
-3. Generate a UML 2.5 Deployment diagram in PlantUML and write it to docs/diagrams/1-plantuml/deployment-diagram.puml.
+3. Generate a UML 2.5 Deployment diagram in PlantUML and write it to 1-plantuml/deployment-diagram.puml.
 ```
 
 ### Prompt 3: Reverse-Engineer Transaction Sequence Diagram from Endpoints
 ```text
 Trace the execution flow of the [User Registration / Checkout / Authentication] endpoint across our controllers, services, repositories, and third-party gateways.
 
-Using the Sequence Diagram specification defined in docs/diagrams/prompts/interaction-diagrams.md:
+Using the Sequence Diagram specification defined in prompts/interaction-diagrams.md:
 1. Model all participating lifelines with accurate stereotypes (actor, boundary, control, entity, database).
 2. Detail the exact method invocations, synchronous requests, database queries, and return responses.
 3. Enclose conditional logic within alt/else frames and loops within loop frames.
-4. Output the diagram as docs/diagrams/1-plantuml/sequence-diagram.puml.
+4. Output the diagram as 1-plantuml/sequence-diagram.puml.
 ```
 
 ### Prompt 4: Reverse-Engineer Entity State Machine from Lifecycle Enums
 ```text
 Inspect the lifecycle states and status transitions of the [Order / Ticket / Account / Task] entity in our codebase.
 
-Using the State Machine specification defined in docs/diagrams/prompts/behavior-diagrams.md:
+Using the State Machine specification defined in prompts/behavior-diagrams.md:
 1. Identify all enum values representing states.
 2. Identify all service methods and event listeners that trigger state transitions.
 3. Extract guard conditions and transition effects.
-4. Generate a formal State Machine diagram in PlantUML and write it to docs/diagrams/1-plantuml/state-machine.puml.
+4. Generate a formal State Machine diagram in PlantUML and write it to 1-plantuml/state-machine.puml.
 ```
 
 ---
@@ -116,7 +125,7 @@ After the agent creates or modifies the `.puml`, `.mmd`, or `.html` files in you
 
 ```bash
 # Render all diagrams across all approaches
-python docs/diagrams/scripts/render_all.py
+python scripts/render_all.py
 ```
 
 The resulting vector `.svg` files can then be directly embedded into your project's main `README.md`, technical design documents (TDDs), or PR descriptions.

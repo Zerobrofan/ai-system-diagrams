@@ -72,26 +72,45 @@ All approaches model the **MedPulse Smart Hospital**:
 
 ## Using this in Any Project
 
-You can install this repository into **any application directory** (e.g., your semester project or company codebase) and have your AI coding agent generate diagrams from your actual code:
+You can install this framework directly into **any application directory** (e.g., your course project or production repository) so your AI coding agent can inspect your codebase and generate diagrams matching your actual architecture:
 
-### 1. Add to Your Application
-Clone or copy this folder into your project (e.g., inside `docs/architecture/`):
+### 1. Add Directly to Your Project Root
+In your project's root directory, copy or clone the diagram framework folders (`prompts/`, `scripts/`, `1-plantuml/`, `2-mermaid/`, `3-diagram-design/`):
+
 ```bash
-git submodule add https://github.com/AbdallahAmir/ai-system-diagrams.git docs/architecture
+# Clone into a temporary folder and copy directly into your project root:
+git clone https://github.com/Zerobrofan/ai-system-diagrams.git _temp_diagrams
+cp -r _temp_diagrams/prompts _temp_diagrams/scripts _temp_diagrams/1-plantuml _temp_diagrams/2-mermaid _temp_diagrams/3-diagram-design .
+rm -rf _temp_diagrams
+```
+
+*Or download the ZIP from [GitHub](https://github.com/Zerobrofan/ai-system-diagrams) and extract the folders directly into your project root.*
+
+Your project directory will look like:
+```text
+your-project/
+├── src/                          # Your actual source code
+├── tests/
+├── prompts/                      # AI prompt playbooks & taxonomy
+├── scripts/                      # Automated Python SVG renderers
+├── 1-plantuml/                   # PlantUML diagrams & output/
+├── 2-mermaid/                    # Mermaid diagrams & output/
+├── 3-diagram-design/             # Editorial HTML/SVG diagrams & output/
+└── ...
 ```
 
 ### 2. Ask the AI Agent to Generate Diagrams
-Open your AI coding assistant (Antigravity, Cursor, Claude Code, Copilot) in your project and prompt it:
+Open your AI coding assistant (Antigravity, Cursor, Claude Code, Copilot) in your project workspace and prompt it:
 
 - **For Class Diagrams**:
-  > *"Inspect the models and database schemas in `/src/models` and generate a PlantUML Class Diagram based on our system architecture using the rules in `docs/architecture/prompts/`."*
+  > *"Inspect the models and database schemas in `/src/` and generate a PlantUML Class Diagram based on our system architecture using the rules in `prompts/structure-diagrams.md`. Save it to `1-plantuml/class-diagram.puml`."*
 - **For Deployment Diagrams**:
-  > *"Inspect our `Dockerfile`, `docker-compose.yml`, and cloud configs, and create a Deployment Diagram matching our actual infrastructure."*
+  > *"Inspect our `Dockerfile`, `docker-compose.yml`, and cloud configs, and create a Deployment Diagram matching our actual infrastructure in `1-plantuml/deployment-diagram.puml`."*
 - **For Use Case / Sequence Diagrams**:
-  > *"Trace our authentication and checkout endpoints and generate the Use Case and Sequence diagrams in PlantUML."*
+  > *"Trace our authentication and business endpoints and generate the Use Case and Sequence diagrams in `1-plantuml/` following the guidelines in `prompts/`."*
 
 ### 3. One-Click Compile to Vector SVG
-Run the built-in script to compile all diagrams into high-resolution SVGs:
+Run the built-in script from your project root to compile all diagrams into high-resolution SVGs:
 ```bash
 python scripts/render_all.py
 ```
