@@ -1,0 +1,83 @@
+%% MedPulse Hospital Management System - Use Case Diagram
+%% Generated with AI for Advanced Software Engineering
+%% Note: Mermaid renders Use Case diagrams via styled flowcharts with system boundaries and oval use cases.
+
+flowchart LR
+    %% Actor Styling Classes
+    classDef actor fill:#F8FAFC,stroke:#0F172A,stroke-width:2px,color:#0F172A,font-weight:600;
+    classDef secondary fill:#F1F5F9,stroke:#475569,stroke-width:1.5px,stroke-dasharray: 4 2,color:#1E293B;
+    classDef usecase fill:#EFF6FF,stroke:#2563EB,stroke-width:1.5px,color:#1E3A8A;
+    classDef includeExtend fill:#FEF3C7,stroke:#D97706,stroke-width:1.2px,color:#78350F;
+
+    %% Primary Actors
+    subgraph Actors ["👥 Hospital & Patient Actors"]
+        direction TB
+        Patient["👤 Patient"]:::actor
+        Doctor["👨‍⚕️ Doctor"]:::actor
+        Nurse["👩‍⚕️ Nurse"]:::actor
+        Admin["🔑 Hospital Admin"]:::actor
+    end
+
+    %% System Boundary
+    subgraph SystemBoundary ["🏥 MedPulse Hospital System Boundary"]
+        direction TB
+        
+        %% Patient Core Use Cases
+        UC_Auth(["Register & Login"]):::usecase
+        UC_Book(["Book Consultation Appointment"]):::usecase
+        UC_Telehealth(["Select Telehealth Video Session"]):::usecase
+        UC_ViewRecords(["View Medical History & EHR"]):::usecase
+        UC_PayBill(["Settle Hospital Invoice"]):::usecase
+        UC_InsuranceClaim(["Claim Insurance Coverage"]):::usecase
+
+        %% Clinical Use Cases
+        UC_Consult(["Conduct Patient Consultation"]):::usecase
+        UC_Prescribe(["Issue Digital Prescription"]):::usecase
+        UC_DrugCheck(["Check Drug Allergy Interactions"]):::includeExtend
+        UC_OrderLab(["Order Laboratory Tests"]):::usecase
+        UC_Vitals(["Record Patient Vital Signs"]):::usecase
+
+        %% Administrative & Security Use Cases
+        UC_ManageStaff(["Manage Staff & Rosters"]):::usecase
+        UC_Analytics(["Generate Hospital Analytics"]):::usecase
+        UC_Audit(["Audit Regulatory Access Logs"]):::usecase
+        UC_MFA(["Verify Identity / 2FA"]):::includeExtend
+
+        %% Include relationships
+        UC_Book -.->|&laquo;include&raquo;| UC_MFA
+        UC_ViewRecords -.->|&laquo;include&raquo;| UC_MFA
+        UC_Consult -.->|&laquo;include&raquo;| UC_ViewRecords
+        UC_Prescribe -.->|&laquo;include&raquo;| UC_DrugCheck
+
+        %% Extend relationships
+        UC_Telehealth -.->|&laquo;extend&raquo;| UC_Book
+        UC_InsuranceClaim -.->|&laquo;extend&raquo;| UC_PayBill
+    end
+
+    %% Secondary Systems
+    subgraph ExternalSystems ["🏢 External Providers"]
+        InsuranceGW["Insurance Clearinghouse Gateway"]:::secondary
+    end
+
+    %% Actor to Use Case Associations
+    Patient --> UC_Auth
+    Patient --> UC_Book
+    Patient --> UC_ViewRecords
+    Patient --> UC_PayBill
+
+    Doctor --> UC_Auth
+    Doctor --> UC_Consult
+    Doctor --> UC_Prescribe
+    Doctor --> UC_OrderLab
+    Doctor --> UC_ViewRecords
+
+    Nurse --> UC_Auth
+    Nurse --> UC_Vitals
+    Nurse --> UC_ViewRecords
+
+    Admin --> UC_Auth
+    Admin --> UC_ManageStaff
+    Admin --> UC_Analytics
+    Admin --> UC_Audit
+
+    UC_InsuranceClaim --> InsuranceGW

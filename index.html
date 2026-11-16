@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Advanced Software Engineering · AI Diagramming Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-subtle: #1a2234;
+      --border: #243048;
+      --text: #f3f4f6;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-warm: #f97316;
+      --accent-coral: #bf4520;
+      --plantuml: #3b82f6;
+      --mermaid: #ec4899;
+      --diagramdesign: #10b981;
+      --font-sans: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-serif: 'Instrument Serif', Georgia, serif;
+      --font-mono: 'Geist Mono', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 2.5rem 1.5rem;
+    }
+
+    .container { max-width: 1360px; margin: 0 auto; }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 2rem;
+    }
+
+    .badge-top {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 0.35rem 0.9rem;
+      border-radius: 9999px;
+      margin-bottom: 1rem;
+    }
+
+    h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 3.5vw + 1rem, 3.2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #ffffff;
+      margin-bottom: 0.75rem;
+    }
+
+    p.subtitle {
+      color: var(--text-muted);
+      font-size: 1.15rem;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* Primary Navigation: Diagram Types */
+    .selector-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .nav-btn {
+      background: var(--card-bg);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      padding: 0.65rem 1.25rem;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      font-weight: 500;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: var(--card-subtle);
+      color: #ffffff;
+      border-color: var(--accent);
+    }
+
+    .nav-btn.active {
+      background: var(--accent);
+      color: #090d16;
+      border-color: var(--accent);
+      font-weight: 600;
+      box-shadow: 0 0 15px rgba(56, 189, 248, 0.35);
+    }
+
+    /* Sub-Navigation: Approaches */
+    .approach-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+      padding: 0.4rem;
+      background: rgba(17, 24, 39, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      max-width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .approach-btn {
+      background: transparent;
+      color: var(--text-muted);
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .approach-btn.active {
+      background: var(--card-subtle);
+      color: #ffffff;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .approach-btn.active.plantuml { color: #60a5fa; border-bottom: 2px solid #3b82f6; }
+    .approach-btn.active.mermaid { color: #f472b6; border-bottom: 2px solid #ec4899; }
+    .approach-btn.active.diagramdesign { color: #34d399; border-bottom: 2px solid #10b981; }
+    .approach-btn.active.compare { color: #fbbf24; border-bottom: 2px solid #f59e0b; }
+    .approach-btn.active.prompts { color: #a78bfa; border-bottom: 2px solid #8b5cf6; }
+
+    /* Content Panels */
+    .content-panel { display: none; }
+    .content-panel.active { display: block; animation: fadeIn 0.3s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Single View Layout */
+    .diagram-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+    }
+
+    .card-header {
+      padding: 1.25rem 1.5rem;
+      background: var(--card-subtle);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .card-title-group h2 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .pill-tag {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 4px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+    .pill-plantuml { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid #3b82f6; }
+    .pill-mermaid { background: rgba(236, 72, 153, 0.2); color: #f9a8d4; border: 1px solid #ec4899; }
+    .pill-diagramdesign { background: rgba(16, 185, 129, 0.2); color: #6ee7b7; border: 1px solid #10b981; }
+
+    .card-actions {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .btn-action {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      font-size: 0.82rem;
+      font-family: var(--font-sans);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-action:hover {
+      color: #ffffff;
+      border-color: var(--accent);
+      background: var(--card-subtle);
+    }
+
+    .diagram-stage {
+      background: #ffffff;
+      padding: 2.5rem 1.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: auto;
+      min-height: 480px;
+    }
+
+    .diagram-stage img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+    }
+
+    .diagram-stage iframe {
+      width: 100%;
+      min-height: 700px;
+      border: none;
+      display: block;
+    }
+
+    /* Code & Meta Section */
+    .card-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--border);
+      background: var(--card-bg);
+    }
+
+    .code-accordion {
+      margin-top: 1rem;
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .code-header {
+      padding: 0.75rem 1rem;
+      background: #161b22;
+      border-bottom: 1px solid #30363d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+      color: #c9d1d9;
+    }
+
+    pre code {
+      display: block;
+      padding: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.5;
+      color: #e6edf3;
+      overflow-x: auto;
+      max-height: 380px;
+    }
+
+    /* Matrix / Comparison Grid */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .compare-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .compare-header {
+      padding: 1.25rem;
+      background: var(--card-subtle);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .compare-preview {
+      background: #ffffff;
+      padding: 1.5rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 320px;
+      overflow: hidden;
+    }
+
+    .compare-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
+
+    .compare-body {
+      padding: 1.25rem;
+      flex: 1;
+      font-size: 0.9rem;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin-top: 0.75rem;
+    }
+    .feature-list li {
+      margin-bottom: 0.5rem;
+      padding-left: 1.25rem;
+      position: relative;
+      color: var(--text-muted);
+    }
+    .feature-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Decision Table */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow-x: auto;
+      margin-bottom: 2.5rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.92rem;
+      text-align: left;
+    }
+
+    th, td {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--card-subtle);
+      color: #ffffff;
+      font-weight: 600;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      letter-spacing: 0.05em;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* Copy Button Tooltip */
+    .copy-success {
+      color: #10b981 !important;
+      font-weight: 600;
+    }
+
+    .author-tag {
+      margin-top: 1rem;
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      padding: 0.4rem 1.1rem;
+      border-radius: 9999px;
+    }
+
+    .author-tag strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 3.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    footer strong {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="badge-top">Advanced Software Engineering · Course Guide</div>
+      <h1>Drawing System Diagrams with AI</h1>
+      <p class="subtitle">
+        A comparative laboratory for software engineering students comparing <strong>PlantUML</strong>, 
+        <strong>Mermaid.js</strong>, and Cathryn Lavery's <strong>diagram-design</strong> framework on a real-world Smart Hospital Management System (MedPulse).
+      </p>
+      <div class="author-tag">
+        <span>👨‍💻</span> Created by: <strong>Eng. Abdallah Amir</strong>
+      </div>
+    </header>
+
+    <!-- Top Diagram Selector -->
+    <div class="selector-bar">
+      <button class="nav-btn active" onclick="setDiagramType('use-case')">
+        <span>🩺</span> Use Case Diagram
+      </button>
+      <button class="nav-btn" onclick="setDiagramType('class')">
+        <span>🏛️</span> Domain Class Diagram
+      </button>
+      <button class="nav-btn" onclick="setDiagramType('deployment')">
+        <span>☁️</span> Deployment Diagram
+      </button>
+      <button class="nav-btn" onclick="setDiagramType('matrix')">
+        <span>📊</span> Comparison Matrix
+      </button>
+      <button class="nav-btn" onclick="setDiagramType('prompts')">
+        <span>🤖</span> AI Prompt Playbook
+      </button>
+    </div>
+
+    <!-- Approach Sub-bar (Visible for the 3 diagram types) -->
+    <div id="approach-selector" class="approach-bar">
+      <button class="approach-btn plantuml active" onclick="setApproach('plantuml')">1. PlantUML (AI-Generated)</button>
+      <button class="approach-btn mermaid" onclick="setApproach('mermaid')">2. Mermaid.js (AI-Generated)</button>
+      <button class="approach-btn diagramdesign" onclick="setApproach('diagramdesign')">3. diagram-design (Editorial)</button>
+      <button class="approach-btn compare" onclick="setApproach('side-by-side')">⚡ Side-by-Side View</button>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- VIEW CONTAINER: DYNAMICALLY POPULATED BY JAVASCRIPT            -->
+    <!-- ============================================================== -->
+    <div id="dynamic-view"></div>
+
+    <footer>
+      <p>Advanced Software Engineering Laboratory · Created by: <strong>Eng. Abdallah Amir</strong></p>
+    </footer>
+
+  </div>
+
+  <script>
+    // State
+    let currentDiagram = 'use-case';
+    let currentApproach = 'plantuml';
+
+    // Diagram Metadata Database
+    const DIAGRAMS = {
+      'use-case': {
+        title: 'Use Case Diagram',
+        domain: 'MedPulse Smart Hospital',
+        desc: 'Models primary human actors (Patient, Doctor, Nurse, Admin), external systems (Insurance Clearinghouse), and clinical use cases featuring mandatory «include» dependencies (Identity/2FA, Drug allergy checks) and «extend» branches (Telehealth consultation, Insurance claims).',
+        files: {
+          plantuml: {
+            src: '1-plantuml/use-case.puml',
+            img: '1-plantuml/output/use-case.svg',
+            lang: 'puml'
+          },
+          mermaid: {
+            src: '2-mermaid/use-case.mmd',
+            img: '2-mermaid/output/use-case.svg',
+            lang: 'mermaid'
+          },
+          diagramdesign: {
+            src: '3-diagram-design/use-case.html',
+            img: '3-diagram-design/output/use-case.svg',
+            html: '3-diagram-design/use-case.html',
+            lang: 'html'
+          }
+        }
+      },
+      'class': {
+        title: 'Domain Class Diagram',
+        domain: 'MedPulse Clinical Domain Model',
+        desc: 'Static structure of the hospital domain featuring an abstract User entity, specialized Patient, Doctor, and Nurse roles, Department aggregation, Appointment scheduling associations, and a MedicalRecord composed of Prescriptions and Invoices with typed multiplicities.',
+        files: {
+          plantuml: {
+            src: '1-plantuml/class-diagram.puml',
+            img: '1-plantuml/output/class-diagram.svg',
+            lang: 'puml'
+          },
+          mermaid: {
+            src: '2-mermaid/class-diagram.mmd',
+            img: '2-mermaid/output/class-diagram.svg',
+            lang: 'mermaid'
+          },
+          diagramdesign: {
+            src: '3-diagram-design/class-diagram.html',
+            img: '3-diagram-design/output/class-diagram.svg',
+            html: '3-diagram-design/class-diagram.html',
+            lang: 'html'
+          }
+        }
+      },
+      'deployment': {
+        title: 'Deployment Diagram',
+        domain: 'MedPulse Production Infrastructure',
+        desc: 'Physical multi-tier topology detailing Client Edge devices (Flutter, React, IoT Daemon), Cloudflare WAF & Edge Ingress, a high-availability Kubernetes microservices cluster (Envoy/Spring Gateway, Go, Java, Python), encrypted PostgreSQL 16 primary-replica & Redis, and external SaaS integrations.',
+        files: {
+          plantuml: {
+            src: '1-plantuml/deployment-diagram.puml',
+            img: '1-plantuml/output/deployment-diagram.svg',
+            lang: 'puml'
+          },
+          mermaid: {
+            src: '2-mermaid/deployment-diagram.mmd',
+            img: '2-mermaid/output/deployment-diagram.svg',
+            lang: 'mermaid'
+          },
+          diagramdesign: {
+            src: '3-diagram-design/deployment-diagram.html',
+            img: '3-diagram-design/output/deployment-diagram.svg',
+            html: '3-diagram-design/deployment-diagram.html',
+            lang: 'html'
+          }
+        }
+      }
+    };
+
+    // Approach Details
+    const APPROACH_INFO = {
+      plantuml: {
+        name: 'PlantUML',
+        badgeClass: 'pill-plantuml',
+        icon: '🌿',
+        tagline: 'Formal UML Standard with Precise DSL Semantics',
+        strengths: ['Strict UML 2.5 compliance', 'Rich stereotyping & multiplicities', 'Concise plain-text DSL'],
+        tradeoffs: ['Auto-layout can loop on large graphs', 'Default styling requires custom skinparams to look modern']
+      },
+      mermaid: {
+        name: 'Mermaid.js',
+        badgeClass: 'pill-mermaid',
+        icon: '🧜',
+        tagline: 'Markdown-Native Zero-Build Engine',
+        strengths: ['Renders natively in GitHub, Notion & Obsidian', 'No build tools required', 'Instant browser live rendering'],
+        tradeoffs: ['No native usecase keyword (requires flowchart LR workaround)', 'Connector routing can tangle on dense graphs']
+      },
+      diagramdesign: {
+        name: 'diagram-design',
+        badgeClass: 'pill-diagramdesign',
+        icon: '🖋️',
+        tagline: 'Editorial Anti-Slop SVG Standard by Cathryn Lavery',
+        strengths: ['Publication-grade aesthetics (1px hairlines, Geist & Instrument Serif fonts)', 'Zero line intersections via manual spatial layout', '100% self-contained standalone HTML/SVG'],
+        tradeoffs: ['Higher verbosity than DSL text', 'AI must compute explicit geometric coordinates']
+      }
+    };
+
+    function setDiagramType(type) {
+      currentDiagram = type;
+      document.querySelectorAll('.selector-bar .nav-btn').forEach((b, idx) => {
+        b.classList.toggle('active', 
+          (type === 'use-case' && idx === 0) ||
+          (type === 'class' && idx === 1) ||
+          (type === 'deployment' && idx === 2) ||
+          (type === 'matrix' && idx === 3) ||
+          (type === 'prompts' && idx === 4)
+        );
+      });
+
+      const approachBar = document.getElementById('approach-selector');
+      if (type === 'matrix' || type === 'prompts') {
+        approachBar.style.display = 'none';
+      } else {
+        approachBar.style.display = 'flex';
+      }
+
+      renderView();
+    }
+
+    function setApproach(approach) {
+      currentApproach = approach;
+      document.querySelectorAll('.approach-bar .approach-btn').forEach(b => {
+        b.classList.remove('active');
+        if (b.classList.contains(approach) || (approach === 'side-by-side' && b.classList.contains('compare'))) {
+          b.classList.add('active');
+        }
+      });
+      renderView();
+    }
+
+    async function loadCode(url) {
+      try {
+        const res = await fetch(url);
+        return await res.text();
+      } catch (e) {
+        return `// Could not load ${url} directly via fetch (open locally or via python scripts/serve.py)`;
+      }
+    }
+
+    async function renderView() {
+      const container = document.getElementById('dynamic-view');
+
+      if (currentDiagram === 'matrix') {
+        container.innerHTML = renderMatrixView();
+        return;
+      }
+
+      if (currentDiagram === 'prompts') {
+        container.innerHTML = renderPromptsView();
+        return;
+      }
+
+      const dData = DIAGRAMS[currentDiagram];
+
+      if (currentApproach === 'side-by-side') {
+        container.innerHTML = `
+          <div class="card-header" style="background: var(--card-bg); border-radius: 8px; margin-bottom: 1.5rem;">
+            <div>
+              <h2 style="color: #fff; font-size: 1.4rem;">${dData.title} · 3-Way Comparative View</h2>
+              <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem;">${dData.desc}</p>
+            </div>
+          </div>
+          <div class="comparison-grid">
+            <!-- PlantUML Card -->
+            <div class="compare-card">
+              <div class="compare-header">
+                <span class="pill-tag pill-plantuml">Approach 1</span>
+                <h3 style="margin-top: 0.5rem; color: #fff;">PlantUML</h3>
+              </div>
+              <div class="compare-preview">
+                <img src="${dData.files.plantuml.img}" alt="PlantUML ${dData.title}" loading="lazy">
+              </div>
+              <div class="compare-body">
+                <p><strong>Formal UML Specification</strong></p>
+                <ul class="feature-list">
+                  <li>Strict OMG UML notation compliance</li>
+                  <li>Auto-rendered via PlantUML HTTP server</li>
+                  <li>Source: <code>${dData.files.plantuml.src}</code></li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                  <a href="${dData.files.plantuml.src}" class="btn-action" target="_blank">View .puml Source</a>
+                  <a href="${dData.files.plantuml.img}" class="btn-action" target="_blank">Open Vector SVG</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mermaid.js Card -->
+            <div class="compare-card">
+              <div class="compare-header">
+                <span class="pill-tag pill-mermaid">Approach 2</span>
+                <h3 style="margin-top: 0.5rem; color: #fff;">Mermaid.js</h3>
+              </div>
+              <div class="compare-preview">
+                <img src="${dData.files.mermaid.img}" alt="Mermaid ${dData.title}" loading="lazy">
+              </div>
+              <div class="compare-body">
+                <p><strong>Markdown-Native Flowchart & Class</strong></p>
+                <ul class="feature-list">
+                  <li>Zero build steps in GitHub & Notion</li>
+                  <li>Rendered via mermaid.ink service</li>
+                  <li>Source: <code>${dData.files.mermaid.src}</code></li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                  <a href="${dData.files.mermaid.src}" class="btn-action" target="_blank">View .mmd Source</a>
+                  <a href="${dData.files.mermaid.img}" class="btn-action" target="_blank">Open Vector SVG</a>
+                </div>
+              </div>
+            </div>
+
+            <!-- diagram-design Card -->
+            <div class="compare-card">
+              <div class="compare-header">
+                <span class="pill-tag pill-diagramdesign">Approach 3</span>
+                <h3 style="margin-top: 0.5rem; color: #fff;">diagram-design</h3>
+              </div>
+              <div class="compare-preview">
+                <img src="${dData.files.diagramdesign.img}" alt="diagram-design ${dData.title}" loading="lazy">
+              </div>
+              <div class="compare-body">
+                <p><strong>Editorial Anti-Slop HTML + SVG</strong></p>
+                <ul class="feature-list">
+                  <li>Hairline 1px borders & editorial typography</li>
+                  <li>Controlled orthogonal routing & masked labels</li>
+                  <li>Source: <code>${dData.files.diagramdesign.src}</code></li>
+                </ul>
+                <div style="margin-top: 1rem;">
+                  <a href="${dData.files.diagramdesign.html}" class="btn-action" target="_blank">Open Standalone HTML</a>
+                  <a href="${dData.files.diagramdesign.img}" class="btn-action" target="_blank">Open Vector SVG</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        return;
+      }
+
+      // Single Approach View
+      const appInfo = APPROACH_INFO[currentApproach];
+      const fileInfo = dData.files[currentApproach];
+      const isHtmlApp = (currentApproach === 'diagramdesign');
+
+      container.innerHTML = `
+        <div class="diagram-card">
+          <div class="card-header">
+            <div class="card-title-group">
+              <h2>
+                ${appInfo.icon} ${dData.title}
+                <span class="pill-tag ${appInfo.badgeClass}">${appInfo.name}</span>
+              </h2>
+              <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.25rem;">
+                ${appInfo.tagline} · Domain: <strong>${dData.domain}</strong>
+              </p>
+            </div>
+            <div class="card-actions">
+              <a href="${fileInfo.src}" class="btn-action" target="_blank">📄 Source File</a>
+              <a href="${fileInfo.img}" class="btn-action" target="_blank" download>⬇️ Download SVG</a>
+              ${isHtmlApp ? `<a href="${fileInfo.html}" class="btn-action" target="_blank">🌐 Live HTML Page</a>` : ''}
+            </div>
+          </div>
+
+          <div class="diagram-stage">
+            <img src="${fileInfo.img}" alt="${dData.title} using ${appInfo.name}" loading="lazy">
+          </div>
+
+          <div class="card-footer">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 1.5rem;">
+              <div>
+                <h4 style="color: #ffffff; margin-bottom: 0.5rem; font-size: 0.95rem;">Key Strengths for this Diagram</h4>
+                <ul class="feature-list">
+                  ${appInfo.strengths.map(s => `<li>${s}</li>`).join('')}
+                </ul>
+              </div>
+              <div>
+                <h4 style="color: #ffffff; margin-bottom: 0.5rem; font-size: 0.95rem;">Engineering Trade-Offs</h4>
+                <ul class="feature-list">
+                  ${appInfo.tradeoffs.map(t => `<li>${t}</li>`).join('')}
+                </ul>
+              </div>
+            </div>
+
+            <div class="code-accordion">
+              <div class="code-header">
+                <span>Source: <code>${fileInfo.src}</code></span>
+                <button class="btn-action" onclick="copySource('${fileInfo.src}', this)">📋 Copy Source Code</button>
+              </div>
+              <pre><code id="code-content">// Loading source code...</code></pre>
+            </div>
+          </div>
+        </div>
+      `;
+
+      // Async load source code into pre
+      loadCode(fileInfo.src).then(text => {
+        const el = document.getElementById('code-content');
+        if (el) el.textContent = text;
+      });
+    }
+
+    function renderMatrixView() {
+      return `
+        <div class="table-container">
+          <div style="padding: 1.5rem; background: var(--card-subtle); border-bottom: 1px solid var(--border);">
+            <h2 style="color: #ffffff; font-size: 1.35rem;">Comprehensive Architectural Comparison Matrix</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem; margin-top: 0.25rem;">
+              Evaluating PlantUML, Mermaid.js, and diagram-design across key software engineering dimensions.
+            </p>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Evaluation Criterion</th>
+                <th>1. PlantUML (AI-Generated)</th>
+                <th>2. Mermaid.js (AI-Generated)</th>
+                <th>3. diagram-design Framework</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>UML 2.5 Semantic Compliance</strong></td>
+                <td><span style="color: #34d399;">★★★★★</span> Full OMG UML compliance for all diagram stereotypes.</td>
+                <td><span style="color: #fbbf24;">★★★☆☆</span> Partial. Class diagrams are strong; Use Cases require flowchart workarounds.</td>
+                <td><span style="color: #34d399;">★★★★★</span> Precise mathematical compliance adhering to <code>type-uml-class.md</code> and <code>type-deployment.md</code>.</td>
+              </tr>
+              <tr>
+                <td><strong>Markdown & PR Integration</strong></td>
+                <td><span style="color: #fbbf24;">★★★☆☆</span> Requires pre-rendered SVG/PNG or a CI/CD GitHub Action.</td>
+                <td><span style="color: #34d399;">★★★★★</span> Native zero-build rendering in GitHub, GitLab, Obsidian, and Notion.</td>
+                <td><span style="color: #38bdf8;">★★★★☆</span> Self-contained HTML with inline SVG; embeds cleanly into web docs or export to SVG.</td>
+              </tr>
+              <tr>
+                <td><strong>Visual Aesthetics & Design Quality</strong></td>
+                <td><span style="color: #fbbf24;">★★★☆☆</span> Functional, but default styles look dated unless skinparams are heavily configured.</td>
+                <td><span style="color: #fbbf24;">★★★☆☆</span> Prone to "Mermaid slop" (standard colors, uncontrolled edge crossings on large graphs).</td>
+                <td><span style="color: #34d399;">★★★★★</span> Publication grade. 1px hairlines, Geist/Instrument typography, zero drop shadows, editorial palette.</td>
+              </tr>
+              <tr>
+                <td><strong>AI Generation Reliability</strong></td>
+                <td><span style="color: #34d399;">★★★★☆</span> High. LLMs are trained on massive volumes of PlantUML syntax.</td>
+                <td><span style="color: #38bdf8;">★★★★☆</span> High, provided prompt instructs AI to avoid angle brackets in generic types.</td>
+                <td><span style="color: #34d399;">★★★★☆</span> High with structured prompt; AI must calculate spatial SVG box coordinates.</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance & Git Diffing</strong></td>
+                <td><span style="color: #34d399;">★★★★★</span> Extremely concise plain text DSL (15–40 lines). Simple Git diffs.</td>
+                <td><span style="color: #34d399;">★★★★★</span> Highly readable plain text DSL (15–50 lines).</td>
+                <td><span style="color: #fbbf24;">★★★☆☆</span> Detailed SVG/HTML code (100–250 lines). Modifying nodes requires updating coordinates.</td>
+              </tr>
+              <tr>
+                <td><strong>Recommended Use Case</strong></td>
+                <td>Formal architectural documentation, academic papers, enterprise UML standards.</td>
+                <td>Engineering READMEs, daily PR discussions, Agile sprint documentation, Notion wikis.</td>
+                <td>Executive presentations, architectural whitepapers, tech blog posts, publication slides.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderPromptsView() {
+      return `
+        <div style="background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 2rem; margin-bottom: 2rem;">
+          <h2 style="color: #ffffff; font-size: 1.4rem; margin-bottom: 0.5rem;">AI Prompting Playbook for Software Engineering Students</h2>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+            Copy-paste these battle-tested prompts into your AI coding assistant (Claude, Gemini, ChatGPT, Copilot) to generate production-quality diagrams.
+          </p>
+
+          <div style="display: grid; gap: 1.5rem;">
+            <div class="code-accordion">
+              <div class="code-header">
+                <span>Prompt 1: PlantUML System Diagrams</span>
+                <button class="btn-action" onclick="copyText(this, 'plantuml-prompt')">📋 Copy Prompt</button>
+              </div>
+              <pre><code id="plantuml-prompt">Act as a Principal Software Architect. Create a formal UML 2.5 [Use Case / Class / Deployment] diagram for a [Hospital / Library] management system.
+
+Requirements:
+1. Output ONLY valid PlantUML enclosed within @startuml and @enduml.
+2. Structure:
+   - For Use Case: left to right direction, rectangle system boundary, primary actors on left, secondary on right, mandatory <<include>> and <<extend>>.
+   - For Class: abstract classes, typed visibility (+, -, #), inheritance (<|--), composition (*--), aggregation (o--), multiplicities on both ends.
+   - For Deployment: client tier, edge/WAF, Kubernetes cluster pods, database replication, protocols & ports labeled.
+3. Styling:
+   - Apply 'skinparam shadowing false', 'skinparam roundcorner 6', and a modern slate/navy palette. Never output unstyled yellow boxes.</code></pre>
+            </div>
+
+            <div class="code-accordion">
+              <div class="code-header">
+                <span>Prompt 2: Mermaid.js Diagrams</span>
+                <button class="btn-action" onclick="copyText(this, 'mermaid-prompt')">📋 Copy Prompt</button>
+              </div>
+              <pre><code id="mermaid-prompt">Act as a Software Architect. Generate an idiomatic Mermaid.js [Use Case / Class / Deployment] diagram for a [System Name].
+
+Requirements:
+1. Syntax Rules:
+   - For Use Case: Use 'flowchart LR'. Place actors in an Actors subgraph, use stadium shapes ([Use Case Name]) in a System Boundary subgraph, and label dotted relations with -.->|&laquo;include&raquo;|.
+   - For Class: Use 'classDiagram'. For generic types, use tildes (List~MedicalRecord~) rather than angle brackets to avoid parse errors.
+   - For Deployment: Use 'flowchart TB' with nested subgraphs for Client, Edge, Kubernetes, and Data tiers. Use cylinder shapes [("Database")] for databases.
+2. Group related components with clear semantic classDef styles.</code></pre>
+            </div>
+
+            <div class="code-accordion">
+              <div class="code-header">
+                <span>Prompt 3: diagram-design (Editorial HTML + SVG)</span>
+                <button class="btn-action" onclick="copyText(this, 'dd-prompt')">📋 Copy Prompt</button>
+              </div>
+              <pre><code id="dd-prompt">Act as an editorial information designer adhering strictly to the 'diagram-design' standard. Generate a standalone, self-contained HTML file containing an inline SVG for [Use Case / Class / Deployment] diagram of [System Name].
+
+Design Constraints:
+1. Palette: Paper background (#f5f5f5), charcoal ink (#2d3142), muted slate (#4f5d75), and coral accent (#bf4520).
+2. Typography: Load Google Fonts 'Instrument Serif' for the h1, 'Geist Mono' for eyebrows/ports, and 'Geist' for nodes.
+3. Hairline 1px borders, NO drop shadows.
+4. Draw connectors BEHIND node boxes. Use orthogonal paths with rounded elbows (rx=8).
+5. Mask all connector labels with opaque background rectangles so lines do not intersect text.
+6. Include a relationship vocabulary legend in the corner.</code></pre>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    async function copySource(url, btn) {
+      try {
+        const text = await loadCode(url);
+        await navigator.clipboard.writeText(text);
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        btn.classList.add('copy-success');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copy-success');
+        }, 2000);
+      } catch (err) {
+        alert('Could not copy to clipboard.');
+      }
+    }
+
+    async function copyText(btn, elementId) {
+      const codeEl = document.getElementById(elementId);
+      if (!codeEl) return;
+      try {
+        await navigator.clipboard.writeText(codeEl.textContent);
+        const original = btn.textContent;
+        btn.textContent = '✅ Copied!';
+        btn.classList.add('copy-success');
+        setTimeout(() => {
+          btn.textContent = original;
+          btn.classList.remove('copy-success');
+        }, 2000);
+      } catch (err) {
+        alert('Could not copy to clipboard.');
+      }
+    }
+
+    // Initialize
+    renderView();
+  </script>
+</body>
+</html>

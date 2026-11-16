@@ -1,0 +1,70 @@
+%% MedPulse Hospital Management System - Deployment Diagram
+%% Generated with AI for Advanced Software Engineering
+%% Visualizing physical nodes, Kubernetes pods, and storage topologies in Mermaid.
+
+flowchart TB
+    classDef client fill:#EFF6FF,stroke:#3B82F6,stroke-width:1.5px,color:#1E3A8A;
+    classDef edge fill:#F8FAFC,stroke:#64748B,stroke-width:1.5px,color:#0F172A;
+    classDef k8s fill:#F0FDF4,stroke:#16A34A,stroke-width:1.5px,color:#14532D;
+    classDef data fill:#FEF3C7,stroke:#D97706,stroke-width:1.5px,color:#78350F;
+    classDef ext fill:#F5F3FF,stroke:#8B5CF6,stroke-width:1.5px,color:#4C1D95;
+
+    subgraph Tier1 ["📱 Client Devices Tier"]
+        MobileApp["📱 Patient Mobile App<br/>(Flutter / iOS & Android)"]:::client
+        WebPortal["💻 EHR Web Portal<br/>(React 19 / TypeScript)"]:::client
+        IoTHub["📟 Bedside Vitals Gateway<br/>(Embedded Linux / MQTT)"]:::client
+    end
+
+    subgraph Tier2 ["🛡️ Edge & DMZ (Cloudflare Network)"]
+        WAF["Cloudflare Edge WAF & DDoS Shield"]:::edge
+        EdgeDNS["Global Anycast DNS & SSL Offload"]:::edge
+    end
+
+    subgraph Tier3 ["☸️ Kubernetes Production Cluster (EKS / VPC)"]
+        Ingress["Ingress Controller<br/>(Traefik / NGINX Ingress)"]:::k8s
+        
+        subgraph Microservices ["Enterprise Microservices Fleet"]
+            APIGW["API Gateway Pods (x3)<br/>(Spring Cloud / Envoy)"]:::k8s
+            EHRService["EHR & Clinical API (x4)<br/>(Spring Boot / Java 21)"]:::k8s
+            ApptService["Scheduling Service (x3)<br/>(Go 1.23 / Gin)"]:::k8s
+            BillingService["Billing & Claims Worker (x2)<br/>(Python 3.12 / FastAPI)"]:::k8s
+        end
+    end
+
+    subgraph Tier4 ["🗄️ Private Healthcare Data Subnet (Encrypted at Rest)"]
+        PGPrimary[("PostgreSQL 16 Primary<br/>[Read/Write OLTP]")]:::data
+        PGReplica[("PostgreSQL 16 Standby<br/>[Read-Only Replica]")]:::data
+        RedisCache[("Redis 7 In-Memory<br/>[Token & Session Cache]")]:::data
+        S3Store[("MinIO / S3 Storage<br/>[DICOM Medical Images]")]:::data
+    end
+
+    subgraph Tier5 ["☁️ External Healthcare & Payment APIs"]
+        InsuranceAPI["Insurance Clearinghouse<br/>(FHIR / HL7 REST)"]:::ext
+        StripeAPI["Stripe Gateway<br/>(PCI-DSS Tier 1)"]:::ext
+        TwilioAPI["Twilio Notification Service<br/>(SMS & Emergency Alerts)"]:::ext
+    end
+
+    %% Client Ingress
+    MobileApp -->|HTTPS / 443| WAF
+    WebPortal -->|HTTPS / WSS| WAF
+    IoTHub -->|MQTTS / 8883| Ingress
+    WAF -->|Internal TLS| Ingress
+
+    %% Routing inside Cluster
+    Ingress -->|HTTP/2 : 8080| APIGW
+    APIGW -->|gRPC : 50051| EHRService
+    APIGW -->|gRPC : 50052| ApptService
+    APIGW -->|gRPC : 50053| BillingService
+
+    %% Database connections
+    EHRService -->|JDBC / TLS| PGPrimary
+    ApptService -->|SQL Connection Pool| PGPrimary
+    ApptService -.->|Read Queries| PGReplica
+    PGPrimary -.->|Streaming WAL Replication| PGReplica
+    EHRService -->|RESP / 6379| RedisCache
+    EHRService -->|S3 API : 9000| S3Store
+
+    %% External SaaS Integrations
+    BillingService -->|HTTPS / FHIR| InsuranceAPI
+    BillingService -->|HTTPS / Tokenized| StripeAPI
+    EHRService -->|REST Webhooks| TwilioAPI

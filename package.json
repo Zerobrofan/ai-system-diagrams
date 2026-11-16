@@ -1,0 +1,34 @@
+{
+  "name": "ai-system-diagrams",
+  "version": "1.0.0",
+  "description": "Comprehensive comparative repository for Advanced Software Engineering students on drawing system diagrams with AI using PlantUML, Mermaid.js, and cathrynlavery/diagram-design.",
+  "main": "index.html",
+  "scripts": {
+    "start": "python scripts/serve.py",
+    "render": "python scripts/render_all.py",
+    "render:plantuml": "python 1-plantuml/render.py",
+    "render:mermaid": "python 2-mermaid/render.py",
+    "render:diagram-design": "python 3-diagram-design/render.py"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/AbdallahAmir/ai-system-diagrams.git"
+  },
+  "keywords": [
+    "software-engineering",
+    "system-diagrams",
+    "uml-diagrams",
+    "plantuml",
+    "mermaid-js",
+    "diagram-design",
+    "ai-coding",
+    "prompt-engineering",
+    "use-case",
+    "class-diagram",
+    "deployment-diagram",
+    "computer-science",
+    "architecture-diagrams"
+  ],
+  "author": "Eng. Abdallah Amir",
+  "license": "MIT"
+}

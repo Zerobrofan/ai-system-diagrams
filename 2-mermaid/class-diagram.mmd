@@ -1,0 +1,126 @@
+%% MedPulse Hospital Management System - Domain Class Diagram
+%% Generated with AI for Advanced Software Engineering
+%% Native Mermaid classDiagram with inheritance, aggregation, composition, and multiplicities.
+
+classDiagram
+    direction TB
+
+    class User {
+        <<abstract>>
+        #String id
+        #String fullName
+        #String email
+        #String phoneNumber
+        #String passwordHash
+        +authenticate(String password) bool
+        +updateContact(String email, String phone) void
+    }
+
+    class Patient {
+        -String bloodGroup
+        -Date dateOfBirth
+        -String emergencyContact
+        -String insurancePolicyNo
+        +getMedicalHistory() List~MedicalRecord~
+        +requestAppointment(Doctor doctor, DateTime slot) Appointment
+    }
+
+    class Staff {
+        <<abstract>>
+        #String employeeId
+        #Date hireDate
+        #Department department
+        +getAssignedShift() String
+    }
+
+    class Doctor {
+        -String medicalLicenseNo
+        -String specialization
+        -Decimal consultationFee
+        +conductConsultation(Patient patient) MedicalRecord
+        +issuePrescription(MedicalRecord record, List~PrescriptionItem~ items) Prescription
+        +orderLabTest(MedicalRecord record, String testName) void
+    }
+
+    class Nurse {
+        -String nursingLicenseNo
+        -ShiftType shiftType
+        +logVitals(Patient patient, float temp, String bp, int hr) void
+    }
+
+    class Department {
+        -String code
+        -String name
+        -Doctor headDoctor
+        -int floorNumber
+        +listActiveDoctors() List~Doctor~
+    }
+
+    class Appointment {
+        -String appointmentId
+        -DateTime scheduledTime
+        -AppointmentStatus status
+        -VisitType visitType
+        +reschedule(DateTime newSlot) bool
+        +markCompleted() void
+        +cancel(String reason) void
+    }
+
+    class MedicalRecord {
+        -String recordId
+        -DateTime recordedAt
+        -String chiefComplaint
+        -String diagnosis
+        -String clinicalNotes
+        +attachPrescription(Prescription prescription) void
+        +generateInvoice() Invoice
+    }
+
+    class Prescription {
+        -String rxNumber
+        -Date issuedDate
+        -Date expirationDate
+        -int refillCount
+        +addItem(PrescriptionItem item) void
+        +isDispensed() bool
+    }
+
+    class PrescriptionItem {
+        -String medicationName
+        -String dosage
+        -String frequency
+        -int durationDays
+        +getInstructions() String
+    }
+
+    class Invoice {
+        -String invoiceNumber
+        -Decimal totalAmount
+        -Decimal insuranceCovered
+        -Decimal patientPayable
+        -PaymentStatus status
+        +processPayment(String gatewayToken) bool
+        +submitInsuranceClaim() bool
+    }
+
+    %% Inheritance relationships
+    User <|-- Patient : generalizes
+    User <|-- Staff : generalizes
+    Staff <|-- Doctor : specializes
+    Staff <|-- Nurse : specializes
+
+    %% Aggregation: Department employs Doctors
+    Department "1" o-- "1..*" Doctor : employs
+
+    %% Associations with Multiplicities
+    Patient "1" --> "0..*" Appointment : books
+    Doctor "1" --> "0..*" Appointment : attends
+    Appointment "0..1" --> "1" MedicalRecord : documents
+
+    %% Composition (Strong Ownership)
+    MedicalRecord "1" *-- "0..*" Prescription : contains
+    Prescription "1" *-- "1..*" PrescriptionItem : specifies
+
+    %% Invoicing associations
+    MedicalRecord "1" --> "1" Invoice : bills
+    Patient "1" --> "0..*" Invoice : responsible for

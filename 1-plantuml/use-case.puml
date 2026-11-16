@@ -1,0 +1,106 @@
+@startuml
+' MedPulse Hospital Management System - Use Case Diagram
+' Generated with AI for Advanced Software Engineering
+title MedPulse Smart Hospital - Use Case Diagram
+
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam roundcorner 8
+skinparam defaultFontName "Segoe UI", "Helvetica", sans-serif
+skinparam defaultFontSize 12
+
+' Color palette: modern slate & ocean blue
+skinparam actor {
+    BackgroundColor #F8FAFC
+    BorderColor #1E293B
+    FontColor #0F172A
+}
+
+skinparam usecase {
+    BackgroundColor #EFF6FF
+    BorderColor #2563EB
+    BorderThickness 1.2
+    FontColor #1E3A8A
+    ArrowColor #475569
+    ArrowThickness 1.1
+}
+
+skinparam rectangle {
+    BackgroundColor #FFFFFF
+    BorderColor #94A3B8
+    BorderThickness 1.5
+    FontColor #0F172A
+    FontSize 14
+    FontStyle bold
+}
+
+' Actors
+actor "Patient" as patient
+actor "Doctor" as doctor
+actor "Nurse" as nurse
+actor "Hospital Admin" as admin
+actor "Insurance Gateway" as insurance <<Secondary System>>
+
+rectangle "MedPulse Hospital System Boundary" {
+    
+    ' Patient Use Cases
+    usecase "Register & Authenticate" as UC_Auth
+    usecase "Book Consultation Appointment" as UC_Book
+    usecase "Select Telehealth Video Session" as UC_Telehealth
+    usecase "View Medical History & EHR" as UC_ViewRecords
+    usecase "Settle Hospital Invoice" as UC_PayBill
+    usecase "Claim Insurance Coverage" as UC_InsuranceClaim
+    
+    ' Clinical Use Cases
+    usecase "Conduct Patient Consultation" as UC_Consult
+    usecase "Issue Digital Prescription" as UC_Prescribe
+    usecase "Check Drug Allergy Interactions" as UC_DrugCheck
+    usecase "Order Laboratory Tests" as UC_OrderLab
+    usecase "Record Patient Vital Signs" as UC_Vitals
+    
+    ' Administrative Use Cases
+    usecase "Manage Hospital Staff & Rosters" as UC_ManageStaff
+    usecase "Generate Hospital Analytics" as UC_Analytics
+    usecase "Audit Regulatory Access Logs" as UC_Audit
+    usecase "Verify Identity / 2FA" as UC_MFA
+}
+
+' Patient Associations
+patient --> UC_Auth
+patient --> UC_Book
+patient --> UC_ViewRecords
+patient --> UC_PayBill
+
+' Doctor Associations
+doctor --> UC_Auth
+doctor --> UC_Consult
+doctor --> UC_Prescribe
+doctor --> UC_OrderLab
+doctor --> UC_ViewRecords
+
+' Nurse Associations
+nurse --> UC_Auth
+nurse --> UC_Vitals
+nurse --> UC_ViewRecords
+
+' Admin Associations
+admin --> UC_Auth
+admin --> UC_ManageStaff
+admin --> UC_Analytics
+admin --> UC_Audit
+
+' Secondary System Associations
+insurance <-- UC_InsuranceClaim
+
+' Use Case Relationships: <<include>>
+UC_Book ..> UC_MFA : <<include>>
+UC_ViewRecords ..> UC_MFA : <<include>>
+UC_Consult ..> UC_ViewRecords : <<include>>
+UC_Prescribe ..> UC_DrugCheck : <<include>>
+
+' Use Case Relationships: <<extend>>
+UC_Telehealth ..> UC_Book : <<extend>>
+UC_InsuranceClaim ..> UC_PayBill : <<extend>>
+
+@enduml

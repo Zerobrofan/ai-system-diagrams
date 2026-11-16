@@ -1,0 +1,158 @@
+@startuml
+' MedPulse Hospital Management System - Domain Class Diagram
+' Generated with AI for Advanced Software Engineering
+title MedPulse Smart Hospital - Domain Class Diagram
+
+skinparam classAttributeIconSize 0
+skinparam roundcorner 6
+skinparam shadowing false
+skinparam defaultFontName "Segoe UI", "Helvetica", sans-serif
+skinparam defaultFontSize 11
+skinparam classFontSize 12
+skinparam classFontStyle bold
+
+' Clean slate & corporate blue palette
+skinparam class {
+    BackgroundColor #FFFFFF
+    BorderColor #334155
+    BorderThickness 1.2
+    ArrowColor #1E293B
+    ArrowThickness 1.1
+}
+
+abstract class User {
+    # id: String
+    # fullName: String
+    # email: String
+    # phoneNumber: String
+    # passwordHash: String
+    + authenticate(password: String): Boolean
+    + updateContact(email: String, phone: String): void
+}
+
+class Patient {
+    - bloodGroup: String
+    - dateOfBirth: Date
+    - emergencyContact: String
+    - insurancePolicyNo: String
+    + getMedicalHistory(): List<MedicalRecord>
+    + requestAppointment(doctor: Doctor, slot: DateTime): Appointment
+}
+
+abstract class Staff {
+    # employeeId: String
+    # hireDate: Date
+    # department: Department
+    + getAssignedShift(): String
+}
+
+class Doctor {
+    - medicalLicenseNo: String
+    - specialization: String
+    - consultationFee: Decimal
+    + conductConsultation(patient: Patient): MedicalRecord
+    + issuePrescription(record: MedicalRecord, items: List<PrescriptionItem>): Prescription
+    + orderLabTest(record: MedicalRecord, testName: String): void
+}
+
+class Nurse {
+    - nursingLicenseNo: String
+    - shiftType: ShiftType
+    + logVitals(patient: Patient, temp: Float, bp: String, hr: Int): void
+}
+
+class Department {
+    - code: String
+    - name: String
+    - headDoctor: Doctor
+    - floorNumber: Int
+    + listActiveDoctors(): List<Doctor>
+}
+
+class Appointment {
+    - appointmentId: String
+    - scheduledTime: DateTime
+    - status: AppointmentStatus
+    - visitType: VisitType
+    + reschedule(newSlot: DateTime): Boolean
+    + markCompleted(): void
+    + cancel(reason: String): void
+}
+
+class MedicalRecord {
+    - recordId: String
+    - recordedAt: DateTime
+    - chiefComplaint: String
+    - diagnosis: String
+    - clinicalNotes: String
+    + attachPrescription(prescription: Prescription): void
+    + generateInvoice(): Invoice
+}
+
+class Prescription {
+    - rxNumber: String
+    - issuedDate: Date
+    - expirationDate: Date
+    - refillCount: Int
+    + addItem(item: PrescriptionItem): void
+    + isDispensed(): Boolean
+}
+
+class PrescriptionItem {
+    - medicationName: String
+    - dosage: String
+    - frequency: String
+    - durationDays: Int
+    + getInstructions(): String
+}
+
+class Invoice {
+    - invoiceNumber: String
+    - totalAmount: Decimal
+    - insuranceCovered: Decimal
+    - patientPayable: Decimal
+    - status: PaymentStatus
+    + processPayment(gatewayToken: String): Boolean
+    + submitInsuranceClaim(): Boolean
+}
+
+enum AppointmentStatus {
+    SCHEDULED
+    CONFIRMED
+    IN_PROGRESS
+    COMPLETED
+    CANCELLED
+}
+
+enum PaymentStatus {
+    PENDING
+    PARTIALLY_PAID
+    SETTLED
+    DISPUTED
+}
+
+' Inheritance Relationships
+User <|-- Patient
+User <|-- Staff
+Staff <|-- Doctor
+Staff <|-- Nurse
+
+' Aggregation (Department has Doctors, Doctors can exist independently)
+Department "1" o-- "1..*" Doctor : employs >
+
+' Associations
+Patient "1" -- "0..*" Appointment : books >
+Doctor "1" -- "0..*" Appointment : attends >
+Appointment "0..1" --> "1" MedicalRecord : documents >
+
+' Composition (MedicalRecord owns Prescription lifecycle)
+MedicalRecord "1" *-- "0..*" Prescription : contains >
+
+' Composition (Prescription owns PrescriptionItems)
+Prescription "1" *-- "1..*" PrescriptionItem : specifies >
+
+' Association with Invoice
+MedicalRecord "1" --> "1" Invoice : bills >
+Patient "1" -- "0..*" Invoice : responsible for >
+
+@enduml

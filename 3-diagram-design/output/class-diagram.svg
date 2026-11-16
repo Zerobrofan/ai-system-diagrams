@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg viewBox="0 0 1080 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="class-title class-desc" id="class-diagram-root">
+        <title id="class-title">MedPulse Hospital · Clinical Domain Model</title>
+        <desc id="class-desc">Editorial UML class diagram showcasing User inheritance into Patient and Doctor, Department aggregation, Appointment association, and MedicalRecord composition with Prescription.</desc>
+        
+        <defs>
+      <style>@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Geist:wght@400;500;600&amp;family=Geist+Mono:wght@400;500;600&amp;family=Noto+Serif:ital@0;1&amp;family=Noto+Sans+KR:wght@400;500;600&amp;family=Noto+Serif+KR:wght@400&amp;family=Noto+Sans+TC:wght@400;500;600&amp;family=Noto+Serif+TC:wght@400&amp;display=swap');
+      #class-diagram-root { --color-paper:   #f5f5f5;
+      --color-ink:     #2d3142;
+      --color-muted:   #4f5d75;
+      --color-accent:  #bf4520;
+      --color-link:    #2e5aa8;
+      --font-sans:     'Geist', system-ui, sans-serif;
+      --font-serif:    'Instrument Serif', serif;
+      --font-mono:     'Geist Mono', ui-monospace, monospace; }
+      #class-diagram-root { font-family: var(--font-sans); color: var(--color-ink); }
+      #class-diagram-root .diagram-container { width: 100%; overflow-x: auto; }</style>
+          <pattern id="class-diagram-dots" width="22" height="22" patternUnits="userSpaceOnUse">
+            <circle cx="1" cy="1" r="0.9" fill="#2d3142" fill-opacity="0.09"/>
+          </pattern>
+
+          <!-- Standard UML Markers according to diagram-design spec -->
+          <marker id="class-diagram-uml-triangle" markerWidth="16" markerHeight="12" refX="15" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0 0, 16 6, 0 12" fill="#f5f5f5" stroke="#2d3142" stroke-width="1"/>
+          </marker>
+          <marker id="class-diagram-uml-triangle-accent" markerWidth="16" markerHeight="12" refX="15" refY="6" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0 0, 16 6, 0 12" fill="#f5f5f5" stroke="#bf4520" stroke-width="1.2"/>
+          </marker>
+          <marker id="class-diagram-uml-diamond-filled" markerWidth="18" markerHeight="10" refX="0" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0 5, 9 0, 18 5, 9 10" fill="#2d3142"/>
+          </marker>
+          <marker id="class-diagram-uml-diamond-hollow" markerWidth="18" markerHeight="10" refX="0" refY="5" orient="auto" markerUnits="userSpaceOnUse">
+            <polygon points="0 5, 9 0, 18 5, 9 10" fill="#f5f5f5" stroke="#2d3142" stroke-width="1"/>
+          </marker>
+          <marker id="class-diagram-uml-open" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto" markerUnits="userSpaceOnUse">
+            <path d="M0,0 L9,4 L0,8" fill="none" stroke="#4f5d75" stroke-width="1"/>
+          </marker>
+        </defs>
+
+        <!-- Canvas Background -->
+        <rect width="100%" height="100%" fill="#f5f5f5"/>
+        <rect width="100%" height="100%" fill="url(#class-diagram-dots)" opacity="0.6"/>
+
+        <!-- RELATIONSHIP PATHS (Drawn before boxes) -->
+        
+        <!-- Patient extends User (Inheritance) -->
+        <path d="M 180,240 V 170 Q 180,162 188,162 H 410" fill="none" stroke="#2d3142" stroke-width="1" marker-end="url(#class-diagram-uml-triangle)"/>
+        
+        <!-- Doctor extends User (Inheritance - Accent Focal Route) -->
+        <path d="M 640,240 V 170 Q 640,162 632,162 H 430" fill="none" stroke="#bf4520" stroke-width="1.2" marker-end="url(#class-diagram-uml-triangle-accent)"/>
+
+        <!-- Department aggregates Doctor (Hollow Diamond at Department end) -->
+        <line x1="880" y1="300" x2="740" y2="300" stroke="#2d3142" stroke-width="1" marker-start="url(#class-diagram-uml-diamond-hollow)"/>
+
+        <!-- Patient books Appointment (Association) -->
+        <line x1="180" y1="365" x2="180" y2="440" stroke="#4f5d75" stroke-width="1" marker-end="url(#class-diagram-uml-open)"/>
+
+        <!-- Doctor attends Appointment (Association) -->
+        <path d="M 640,365 V 450 Q 640,460 630,460 H 290" fill="none" stroke="#4f5d75" stroke-width="1" marker-end="url(#class-diagram-uml-open)"/>
+
+        <!-- Appointment documents MedicalRecord (Association) -->
+        <line x1="290" y1="480" x2="420" y2="480" stroke="#4f5d75" stroke-width="1" marker-end="url(#class-diagram-uml-open)"/>
+
+        <!-- MedicalRecord composed of Prescription (Filled Diamond at MedicalRecord) -->
+        <line x1="640" y1="480" x2="760" y2="480" stroke="#2d3142" stroke-width="1" marker-start="url(#class-diagram-uml-diamond-filled)"/>
+
+        <!-- MedicalRecord generates Invoice (Association) -->
+        <path d="M 530,555 V 600 Q 530,610 520,610 H 420" fill="none" stroke="#4f5d75" stroke-width="1" marker-end="url(#class-diagram-uml-open)"/>
+
+        <!-- MULTIPLICITY MASKS & LABELS -->
+        <!-- Department o- - Doctor -->
+        <rect x="850" y="293" width="16" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="858" y="303" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+        <rect x="750" y="293" width="26" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="763" y="303" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1..*</text>
+
+        <!-- Patient - - Appointment -->
+        <rect x="186" y="375" width="12" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="192" y="385" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+        <rect x="186" y="420" width="24" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="198" y="430" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">0..*</text>
+
+        <!-- Appointment - - MedicalRecord -->
+        <rect x="300" y="473" width="24" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="312" y="483" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">0..1</text>
+        <rect x="390" y="473" width="14" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="397" y="483" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+
+        <!-- MedicalRecord *- - Prescription -->
+        <rect x="660" y="473" width="14" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="667" y="483" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">1</text>
+        <rect x="730" y="473" width="24" height="13" rx="2" fill="#f5f5f5"/>
+        <text x="742" y="483" fill="#2d3142" font-size="8.5" font-family="'Geist Mono', monospace" text-anchor="middle" font-weight="600">0..*</text>
+
+
+        <!-- CLASS BOX 1: User (Abstract Base) -->
+        <g id="class-user">
+          <rect x="320" y="40" width="220" height="120" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <!-- Compartment 1: Name -->
+          <text x="430" y="58" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.1em">«abstract»</text>
+          <text x="430" y="74" fill="#2d3142" font-size="12" font-weight="600" font-style="italic" font-family="'Geist', sans-serif" text-anchor="middle">User</text>
+          <line x1="320" y1="84" x2="540" y2="84" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <!-- Compartment 2: Attributes -->
+          <text x="330" y="99" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace"># id: String</text>
+          <text x="330" y="113" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace"># fullName: String</text>
+          <line x1="320" y1="121" x2="540" y2="121" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <!-- Compartment 3: Operations -->
+          <text x="330" y="136" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ authenticate(pass: String): bool</text>
+          <text x="330" y="150" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ updateContact(phone: String): void</text>
+        </g>
+
+        <!-- CLASS BOX 2: Patient -->
+        <g id="class-patient">
+          <rect x="70" y="240" width="220" height="125" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="180" y="262" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Patient</text>
+          <line x1="70" y1="272" x2="290" y2="272" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="80" y="288" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- bloodGroup: String</text>
+          <text x="80" y="302" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- insurancePolicyNo: String</text>
+          <line x1="70" y1="310" x2="290" y2="310" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="80" y="326" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ getMedicalHistory(): List</text>
+          <text x="80" y="340" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ requestAppointment(): Appt</text>
+        </g>
+
+        <!-- CLASS BOX 3: Doctor (Focal Class - Accent Tint) -->
+        <g id="class-doctor">
+          <rect x="540" y="240" width="200" height="125" rx="6" fill="#ffffff" stroke="#bf4520" stroke-width="1.5"/>
+          <text x="640" y="262" fill="#bf4520" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Doctor</text>
+          <line x1="540" y1="272" x2="740" y2="272" stroke="#bf4520" stroke-width="1" stroke-opacity="0.25"/>
+          <text x="550" y="288" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- medicalLicenseNo: String</text>
+          <text x="550" y="302" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- specialization: String</text>
+          <line x1="540" y1="310" x2="740" y2="310" stroke="#bf4520" stroke-width="1" stroke-opacity="0.25"/>
+          <text x="550" y="326" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ conductConsultation(): Record</text>
+          <text x="550" y="340" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ issuePrescription(): Rx</text>
+        </g>
+
+        <!-- CLASS BOX 4: Department -->
+        <g id="class-department">
+          <rect x="880" y="240" width="160" height="110" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="960" y="262" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Department</text>
+          <line x1="880" y1="272" x2="1040" y2="272" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="890" y="288" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- code: String</text>
+          <text x="890" y="302" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- name: String</text>
+          <line x1="880" y1="310" x2="1040" y2="310" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="890" y="326" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ listDoctors(): Doctor[]</text>
+        </g>
+
+        <!-- CLASS BOX 5: Appointment -->
+        <g id="class-appointment">
+          <rect x="70" y="440" width="220" height="115" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="180" y="462" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Appointment</text>
+          <line x1="70" y1="472" x2="290" y2="472" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="80" y="488" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- scheduledTime: DateTime</text>
+          <text x="80" y="502" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- status: StatusEnum</text>
+          <line x1="70" y1="510" x2="290" y2="510" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="80" y="526" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ reschedule(newSlot): bool</text>
+          <text x="80" y="540" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ cancel(reason: String): void</text>
+        </g>
+
+        <!-- CLASS BOX 6: MedicalRecord -->
+        <g id="class-medical-record">
+          <rect x="420" y="440" width="220" height="115" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="530" y="462" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">MedicalRecord</text>
+          <line x1="420" y1="472" x2="640" y2="472" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="430" y="488" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- recordId: String</text>
+          <text x="430" y="502" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- diagnosis: String</text>
+          <line x1="420" y1="510" x2="640" y2="510" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="430" y="526" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ attachPrescription(rx): void</text>
+          <text x="430" y="540" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ generateInvoice(): Invoice</text>
+        </g>
+
+        <!-- CLASS BOX 7: Prescription -->
+        <g id="class-prescription">
+          <rect x="760" y="440" width="220" height="115" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="870" y="462" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Prescription</text>
+          <line x1="760" y1="472" x2="980" y2="472" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="770" y="488" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- rxNumber: String</text>
+          <text x="770" y="502" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- refillCount: Int</text>
+          <line x1="760" y1="510" x2="980" y2="510" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="770" y="526" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ addItem(item: RxItem): void</text>
+          <text x="770" y="540" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ isDispensed(): bool</text>
+        </g>
+
+        <!-- CLASS BOX 8: Invoice -->
+        <g id="class-invoice">
+          <rect x="240" y="590" width="180" height="95" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+          <text x="330" y="610" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Invoice</text>
+          <line x1="240" y1="620" x2="420" y2="620" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="250" y="635" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- totalAmount: Decimal</text>
+          <text x="250" y="649" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">- status: PaymentStatus</text>
+          <line x1="240" y1="655" x2="420" y2="655" stroke="#2d3142" stroke-width="1" stroke-opacity="0.15"/>
+          <text x="250" y="670" fill="#2d3142" font-size="9" font-family="'Geist Mono', monospace">+ processPayment(): bool</text>
+        </g>
+
+        <!-- GRAMMAR REFERENCE LEGEND (BOTTOM RIGHT) -->
+        <g id="legend" transform="translate(680, 595)">
+          <rect x="0" y="0" width="340" height="90" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="0.8" stroke-opacity="0.2"/>
+          <text x="12" y="16" fill="#4f5d75" font-size="7.5" font-family="'Geist Mono', monospace" letter-spacing="0.14em">UML RELATIONSHIP VOCABULARY</text>
+
+          <!-- Inheritance -->
+          <line x1="15" y1="34" x2="45" y2="34" stroke="#2d3142" stroke-width="1" marker-end="url(#class-diagram-uml-triangle)"/>
+          <text x="55" y="37" fill="#2d3142" font-size="8" font-family="'Geist', sans-serif">Inheritance (`extends`)</text>
+
+          <!-- Composition -->
+          <line x1="180" y1="34" x2="210" y2="34" stroke="#2d3142" stroke-width="1" marker-start="url(#class-diagram-uml-diamond-filled)"/>
+          <text x="220" y="37" fill="#2d3142" font-size="8" font-family="'Geist', sans-serif">Composition (owns)</text>
+
+          <!-- Aggregation -->
+          <line x1="15" y1="58" x2="45" y2="58" stroke="#2d3142" stroke-width="1" marker-start="url(#class-diagram-uml-diamond-hollow)"/>
+          <text x="55" y="61" fill="#2d3142" font-size="8" font-family="'Geist', sans-serif">Aggregation (has)</text>
+
+          <!-- Association -->
+          <line x1="180" y1="58" x2="210" y2="58" stroke="#4f5d75" stroke-width="1" marker-end="url(#class-diagram-uml-open)"/>
+          <text x="220" y="61" fill="#2d3142" font-size="8" font-family="'Geist', sans-serif">Association (multiplicity)</text>
+        </g>
+
+      </svg>

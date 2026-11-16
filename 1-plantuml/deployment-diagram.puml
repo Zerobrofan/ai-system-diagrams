@@ -1,0 +1,117 @@
+@startuml
+' MedPulse Hospital Management System - Deployment Diagram
+' Generated with AI for Advanced Software Engineering
+title MedPulse Smart Hospital - Physical Deployment Architecture
+
+skinparam shadowing false
+skinparam roundcorner 6
+skinparam defaultFontName "Segoe UI", "Helvetica", sans-serif
+skinparam defaultFontSize 11
+
+skinparam node {
+    BackgroundColor #F8FAFC
+    BorderColor #334155
+    BorderThickness 1.2
+    FontColor #0F172A
+}
+
+skinparam artifact {
+    BackgroundColor #EFF6FF
+    BorderColor #2563EB
+    FontColor #1E3A8A
+}
+
+skinparam database {
+    BackgroundColor #FEF3C7
+    BorderColor #D97706
+    FontColor #78350F
+}
+
+skinparam cloud {
+    BackgroundColor #F1F5F9
+    BorderColor #64748B
+    FontColor #1E293B
+}
+
+' Clients
+node "Patient Mobile Device" as mobile_dev <<iOS / Android>> {
+    artifact "MedPulse Patient App\n[Flutter 3.x / Dart]" as mobile_app
+}
+
+node "Clinical Workstation" as clinical_pc <<Windows 11 / macOS>> {
+    artifact "EHR Web Portal\n[React 19 / TypeScript]" as web_app
+}
+
+node "Bedside IoT Gateway" as iot_hub <<Embedded Linux>> {
+    artifact "Vitals Telemetry Daemon\n[Rust / MQTT Client]" as iot_agent
+}
+
+' Edge Tier
+cloud "Cloudflare Edge Network" as edge {
+    node "Cloudflare CDN & WAF" as waf
+    node "Edge DNS & DDoS Shield" as dns
+}
+
+' Enterprise Kubernetes Cluster
+node "Production Kubernetes Cluster (EKS / Bare-Metal)" as k8s_cluster {
+    
+    node "Ingress Controller" as ingress <<Traefik / NGINX>> {
+        artifact "TLS Termination & Routing" as routing
+    }
+
+    node "Pod: API Gateway (Replica x3)" as gateway_pod {
+        artifact "Spring Cloud Gateway\n[Java 21 / Netty]" as api_gw
+    }
+
+    node "Pod: Core EHR Service (Replica x4)" as ehr_pod {
+        artifact "EHR & Clinical API\n[Spring Boot / JVM]" as ehr_service
+    }
+
+    node "Pod: Appointment Service (Replica x3)" as appt_pod {
+        artifact "Scheduling Service\n[Go 1.23 / Gin]" as appt_service
+    }
+
+    node "Pod: Billing & Claims Worker (Replica x2)" as billing_pod {
+        artifact "Claims & Payment Worker\n[Python 3.12 / FastAPI]" as billing_service
+    }
+}
+
+' Data Tier
+node "Secure Healthcare VPC (Private Subnet)" as data_tier {
+    database "PostgreSQL 16 Cluster\n[Primary Write Instance]" as pg_primary
+    database "PostgreSQL 16 Replica\n[Read-Only Standby]" as pg_replica
+    database "Redis 7 Cluster\n[In-Memory Cache & Session]" as redis_cache
+    node "Encrypted Storage (MinIO / S3)\n[DICOM Medical Images]" as dicom_store
+}
+
+' External Systems
+cloud "External Health & Cloud Services" as ext_services {
+    node "Insurance Clearinghouse" as ins_cloud <<FHIR / HL7 REST>>
+    node "Stripe Payment Gateway" as stripe_cloud <<PCI-DSS Tier 1>>
+    node "Twilio SMS & Alert Service" as twilio_cloud <<REST API>>
+}
+
+' Networking connections
+mobile_app --> waf : HTTPS : 443\n(mTLS / OAuth2)
+web_app --> waf : HTTPS : 443\n(WSS / WebSockets)
+iot_agent --> routing : MQTTS : 8883\n(Device Certs)
+
+waf --> routing : Internal TLS : 443
+routing --> api_gw : HTTP/2 : 8080
+
+api_gw --> ehr_service : gRPC : 50051
+api_gw --> appt_service : gRPC : 50052
+api_gw --> billing_service : gRPC : 50053
+
+ehr_service --> pg_primary : JDBC / TLS : 5432
+appt_service --> pg_primary : SQL / Connection Pool
+appt_service --> pg_replica : Read Queries : 5432
+ehr_service --> redis_cache : RESP : 6379 (Tokens & Cache)
+ehr_service --> dicom_store : S3 API : 9000 (Scans & X-Rays)
+pg_primary ..> pg_replica : Streaming Replication (WAL)
+
+billing_service --> ins_cloud : HTTPS : 443 (FHIR v4)
+billing_service --> stripe_cloud : HTTPS : 443 (Payment Token)
+ehr_service --> twilio_cloud : HTTPS : 443 (Emergency SMS)
+
+@enduml
