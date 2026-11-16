@@ -1,6 +1,6 @@
 <div align="center">
 
-# AI System Diagrams
+# 🤖 AI System Diagrams
 ### Drawing Architecture Diagrams with AI for Advanced Software Engineering
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
