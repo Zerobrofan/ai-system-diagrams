@@ -439,35 +439,35 @@
         <strong>Mermaid.js</strong>, and Cathryn Lavery's <strong>diagram-design</strong> framework on a real-world Smart Hospital Management System (MedPulse).
       </p>
       <div class="author-tag">
-        <span>👨‍💻</span> Created by: <strong>Eng. Abdallah Amir</strong>
+        Created by: <strong>Eng. Abdallah Amir</strong>
       </div>
     </header>
 
     <!-- Top Diagram Selector -->
     <div class="selector-bar">
       <button class="nav-btn active" onclick="setDiagramType('use-case')">
-        <span>🩺</span> Use Case Diagram
+        Use Case Diagram
       </button>
       <button class="nav-btn" onclick="setDiagramType('class')">
-        <span>🏛️</span> Domain Class Diagram
+        Domain Class Diagram
       </button>
       <button class="nav-btn" onclick="setDiagramType('deployment')">
-        <span>☁️</span> Deployment Diagram
+        Deployment Diagram
       </button>
       <button class="nav-btn" onclick="setDiagramType('matrix')">
-        <span>📊</span> Comparison Matrix
+        Comparison Matrix
       </button>
       <button class="nav-btn" onclick="setDiagramType('prompts')">
-        <span>🤖</span> AI Prompt Playbook
+        AI Prompt Playbook
       </button>
     </div>
 
     <!-- Approach Sub-bar (Visible for the 3 diagram types) -->
     <div id="approach-selector" class="approach-bar">
-      <button class="approach-btn plantuml active" onclick="setApproach('plantuml')">1. PlantUML (AI-Generated)</button>
-      <button class="approach-btn mermaid" onclick="setApproach('mermaid')">2. Mermaid.js (AI-Generated)</button>
+      <button class="approach-btn plantuml active" onclick="setApproach('plantuml')">1. PlantUML (Formal DSL)</button>
+      <button class="approach-btn mermaid" onclick="setApproach('mermaid')">2. Mermaid.js (Markdown-Native)</button>
       <button class="approach-btn diagramdesign" onclick="setApproach('diagramdesign')">3. diagram-design (Editorial)</button>
-      <button class="approach-btn compare" onclick="setApproach('side-by-side')">⚡ Side-by-Side View</button>
+      <button class="approach-btn compare" onclick="setApproach('side-by-side')">Side-by-Side View</button>
     </div>
 
     <!-- ============================================================== -->
@@ -564,7 +564,6 @@
       plantuml: {
         name: 'PlantUML',
         badgeClass: 'pill-plantuml',
-        icon: '🌿',
         tagline: 'Formal UML Standard with Precise DSL Semantics',
         strengths: ['Strict UML 2.5 compliance', 'Rich stereotyping & multiplicities', 'Concise plain-text DSL'],
         tradeoffs: ['Auto-layout can loop on large graphs', 'Default styling requires custom skinparams to look modern']
@@ -572,7 +571,6 @@
       mermaid: {
         name: 'Mermaid.js',
         badgeClass: 'pill-mermaid',
-        icon: '🧜',
         tagline: 'Markdown-Native Zero-Build Engine',
         strengths: ['Renders natively in GitHub, Notion & Obsidian', 'No build tools required', 'Instant browser live rendering'],
         tradeoffs: ['No native usecase keyword (requires flowchart LR workaround)', 'Connector routing can tangle on dense graphs']
@@ -580,8 +578,7 @@
       diagramdesign: {
         name: 'diagram-design',
         badgeClass: 'pill-diagramdesign',
-        icon: '🖋️',
-        tagline: 'Editorial Anti-Slop SVG Standard by Cathryn Lavery',
+        tagline: 'Editorial Vector Standard by Cathryn Lavery',
         strengths: ['Publication-grade aesthetics (1px hairlines, Geist & Instrument Serif fonts)', 'Zero line intersections via manual spatial layout', '100% self-contained standalone HTML/SVG'],
         tradeoffs: ['Higher verbosity than DSL text', 'AI must compute explicit geometric coordinates']
       }
@@ -736,7 +733,7 @@
           <div class="card-header">
             <div class="card-title-group">
               <h2>
-                ${appInfo.icon} ${dData.title}
+                ${dData.title}
                 <span class="pill-tag ${appInfo.badgeClass}">${appInfo.name}</span>
               </h2>
               <p style="color: var(--text-muted); font-size: 0.88rem; margin-top: 0.25rem;">
@@ -744,9 +741,9 @@
               </p>
             </div>
             <div class="card-actions">
-              <a href="${fileInfo.src}" class="btn-action" target="_blank">📄 Source File</a>
-              <a href="${fileInfo.img}" class="btn-action" target="_blank" download>⬇️ Download SVG</a>
-              ${isHtmlApp ? `<a href="${fileInfo.html}" class="btn-action" target="_blank">🌐 Live HTML Page</a>` : ''}
+              <a href="${fileInfo.src}" class="btn-action" target="_blank">Source File</a>
+              <a href="${fileInfo.img}" class="btn-action" target="_blank" download>Download SVG</a>
+              ${isHtmlApp ? `<a href="${fileInfo.html}" class="btn-action" target="_blank">Live HTML Page</a>` : ''}
             </div>
           </div>
 
@@ -773,7 +770,7 @@
             <div class="code-accordion">
               <div class="code-header">
                 <span>Source: <code>${fileInfo.src}</code></span>
-                <button class="btn-action" onclick="copySource('${fileInfo.src}', this)">📋 Copy Source Code</button>
+                <button class="btn-action" onclick="copySource('${fileInfo.src}', this)">Copy Source Code</button>
               </div>
               <pre><code id="code-content">// Loading source code...</code></pre>
             </div>
@@ -861,7 +858,7 @@
             <div class="code-accordion">
               <div class="code-header">
                 <span>Prompt 1: PlantUML System Diagrams</span>
-                <button class="btn-action" onclick="copyText(this, 'plantuml-prompt')">📋 Copy Prompt</button>
+                <button class="btn-action" onclick="copyText(this, 'plantuml-prompt')">Copy Prompt</button>
               </div>
               <pre><code id="plantuml-prompt">Act as a Principal Software Architect. Create a formal UML 2.5 [Use Case / Class / Deployment] diagram for a [Hospital / Library] management system.
 
@@ -878,7 +875,7 @@ Requirements:
             <div class="code-accordion">
               <div class="code-header">
                 <span>Prompt 2: Mermaid.js Diagrams</span>
-                <button class="btn-action" onclick="copyText(this, 'mermaid-prompt')">📋 Copy Prompt</button>
+                <button class="btn-action" onclick="copyText(this, 'mermaid-prompt')">Copy Prompt</button>
               </div>
               <pre><code id="mermaid-prompt">Act as a Software Architect. Generate an idiomatic Mermaid.js [Use Case / Class / Deployment] diagram for a [System Name].
 
@@ -893,7 +890,7 @@ Requirements:
             <div class="code-accordion">
               <div class="code-header">
                 <span>Prompt 3: diagram-design (Editorial HTML + SVG)</span>
-                <button class="btn-action" onclick="copyText(this, 'dd-prompt')">📋 Copy Prompt</button>
+                <button class="btn-action" onclick="copyText(this, 'dd-prompt')">Copy Prompt</button>
               </div>
               <pre><code id="dd-prompt">Act as an editorial information designer adhering strictly to the 'diagram-design' standard. Generate a standalone, self-contained HTML file containing an inline SVG for [Use Case / Class / Deployment] diagram of [System Name].
 
@@ -915,7 +912,7 @@ Design Constraints:
         const text = await loadCode(url);
         await navigator.clipboard.writeText(text);
         const original = btn.textContent;
-        btn.textContent = '✅ Copied!';
+        btn.textContent = 'Copied';
         btn.classList.add('copy-success');
         setTimeout(() => {
           btn.textContent = original;
@@ -932,7 +929,7 @@ Design Constraints:
       try {
         await navigator.clipboard.writeText(codeEl.textContent);
         const original = btn.textContent;
-        btn.textContent = '✅ Copied!';
+        btn.textContent = 'Copied';
         btn.classList.add('copy-success');
         setTimeout(() => {
           btn.textContent = original;
