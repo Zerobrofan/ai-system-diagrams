@@ -43,10 +43,9 @@ All three approaches are demonstrated on a single reference domain: the **MedPul
 This repository includes a standalone web app ([`index.html`](index.html)) to compare diagrams side-by-side, inspect raw source code, and copy AI prompts:
 
 ```bash
-# Launch local preview server
-python scripts/serve.py
+# Inspect the live web app:
+https://zerobrofan.github.io/ai-system-diagrams/
 ```
-*Or simply open [`index.html`](index.html) directly in any browser.*
 
 ---
 
